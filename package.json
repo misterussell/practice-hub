@@ -18,10 +18,12 @@
       "react-app"
     ],
     "plugins": [
-      "transform-es2015-modules-commonjs"
+      "transform-es2015-modules-commonjs",
+      "transform-object-rest-spread"
     ]
   },
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "chai": "^4.1.2",
     "mocha": "^4.0.1"
   }

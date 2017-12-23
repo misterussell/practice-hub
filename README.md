@@ -12,3 +12,4 @@ This repo is a centralized location for me to store puzzle/practice JavaScript. 
 - Testing: Mocha/Chai.
   - [How to hack CRA to use mocha/chai rather than Jest](https://www.codementor.io/daveschinkel13/running-mocha-enzyme-with-creat-react-app-84flnngkk).
   - To handle the [depreciation](https://github.com/mochajs/mocha/wiki/compilers-deprecation) of `--compilers` you will can swap out `--compilers js:babel-core/register ` with `"--require babel-core/register`
+- Babel Plugins: [Object Rest Spread](https://babeljs.io/docs/plugins/transform-object-rest-spread/)
