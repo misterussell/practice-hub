@@ -2,7 +2,8 @@ function getNextGeneration(cells, generations) {
   // store the computed current generation
   const currentGen = generateGenState(cells)
   const nextGen = generateNextGen(currentGen);
-  return nextGen;
+  const noCells = cells.length === 0 ? true : false;
+  return noCells ? [] : nextGen;
 }
 
 function generateGenState(rawCells) {
@@ -27,18 +28,18 @@ function generateNextGen(gen) {
 }
 
 function createCell(x, y, cellState, toroidalLimits) {
-    // factory settings
-    const cellHash = (x * 15486047) + (y * 15487429);
-    // factory
-    const Cell = () => ({
-        x,
-        y,
-        cellHash,
-        cellState,
-        toroidalLimits
-    });
+  // factory settings
+  const cellHash = (x * 15486047) + (y * 15487429);
+  // factory
+  const Cell = () => ({
+    x,
+    y,
+    cellHash,
+    cellState,
+    toroidalLimits
+  });
 
-    return Cell();
+  return Cell();
 }
 
 function getNextCellState(cell, genState) {
@@ -50,6 +51,7 @@ function getNextCellState(cell, genState) {
   const highLimit = cell.x === 1 ? 5 : cell.x - 1;
   const rightLimit = cell.y === 5 ? 1 : cell.y + 1;
   const leftLimit = cell.y === 1 ? 5 : cell.y - 1;
+
   const blockSum = [
       [highLimit, leftLimit],
       [highLimit, cell.y],
@@ -63,9 +65,6 @@ function getNextCellState(cell, genState) {
         return genState[(neighbor[0] * 15486047) + (neighbor[1] * 15487429)].cellState;
       }).reduce((a, b) => a + b);
 
-  // if the sum of all nine fields is 3, the inner field state for the next generation will be life (no matter of its previous contents)
-  // if the all-field sum is 4, the inner field retains its current state
-  // every other sum sets the inner field to death.
   const sum3 = blockSum === 3 ? true : false;
   const sum4 = blockSum === 4 ? true : false
   const nextState = sum3 ? 1 : sum4 ? cell.cellState : 0;
