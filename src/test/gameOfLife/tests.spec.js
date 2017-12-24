@@ -1,6 +1,12 @@
 import { expect } from 'chai'
 
-import life from '../../drills/gameOfLife/life';
+import {
+  getNextGeneration,
+  generateGenState,
+  generateNextGen,
+  createCell,
+  getNextCellState
+} from '../../drills/gameOfLife/life';
 
 describe('Of the generation functions:', () => {
 
@@ -18,20 +24,20 @@ describe('Of the generation functions:', () => {
     y = 1;
     cellState = true;
     toroidalLimits = [5, 5]
-    testCell = life.createCell(x, y, cellState, toroidalLimits);
-    testGen = life.generateGenState(gen);
+    testCell = createCell(x, y, cellState, toroidalLimits);
+    testGen = generateGenState(gen);
   });
 
   it('getNextGeneration() should return an object when passed an array of arrays', () => {
-    expect(life.getNextGeneration(gen, 1)).to.be.an('object');
+    expect(getNextGeneration(gen, 1)).to.be.an('object');
   });
 
   it('generateGenState() should return an object when passed an array of arrays', () => {
-    expect(life.generateGenState(gen)).to.be.an('object');
+    expect(generateGenState(gen)).to.be.an('object');
   });
 
   it('createCell() should return an object when passed an x, y, cellState, and toroidalLimits array', () => {
-    expect(life.createCell(x, y, cellState, toroidalLimits)).to.be.an('object');
+    expect(createCell(x, y, cellState, toroidalLimits)).to.be.an('object');
   });
 
   it('the cell created should have properties: x, y, cellHash, cellState, toroidal limits, getNextState(), and getHash()', () => {
@@ -43,14 +49,20 @@ describe('Of the generation functions:', () => {
   })
 
   it('a generation seed should not have an nextState property if before the first tick', () => {
-    expect(testCell.cellHash).to.not.have.property('nextState')
+    expect(testGen[testCell.cellHash]).to.not.have.property('nextState')
+    generateNextGen(testGen);
+    expect(testGen[testCell.cellHash]).to.have.property('nextState');
+  })
+
+  it('getNextCellState() should return an object', () => {
+    expect(getNextCellState(testCell, testGen)).to.be.an('object');
   })
 
   it('getNextCellState() should set the state of the cell to 0 or 1', () => {
     2,3
-    let secondCell = life.createCell(2, 3, cellState, toroidalLimits);
-    expect(life.getNextCellState(testCell, testGen));
-    expect(life.getNextCellState(secondCell, testGen));
+    let secondCell = createCell(2, 3, cellState, toroidalLimits);
+    expect(getNextCellState(testCell, testGen));
+    expect(getNextCellState(secondCell, testGen));
   })
 
 })

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import life from './drills/gameOfLife/life';
+import { getNextGeneration } from './drills/gameOfLife/life';
 
 class App extends Component {
   render() {
@@ -27,7 +27,7 @@ class App extends Component {
         [0, 0, 0, 0, 0]
     ];
 
-    console.log(life.getNextGeneration(gen, 1));
+    console.log(getNextGeneration(gen, 1));
   }
 }
 
