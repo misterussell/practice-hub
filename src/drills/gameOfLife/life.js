@@ -47,10 +47,10 @@ function getNextCellState(cell, genState) {
   // if the x value is 5 we need to check against x values of 1
   // if the y value is 1 we need to check against y values toroidalLimits[1]
   // if the y value is 5 we need to check against y values of 1
-  const lowLimit = cell.x === 5 ? 1 : cell.x + 1;
-  const highLimit = cell.x === 1 ? 5 : cell.x - 1;
-  const rightLimit = cell.y === 5 ? 1 : cell.y + 1;
-  const leftLimit = cell.y === 1 ? 5 : cell.y - 1;
+  const lowLimit = cell.x === cell.toroidalLimits[0] ? 1 : cell.x + 1;
+  const highLimit = cell.x === 1 ? cell.toroidalLimits[0] : cell.x - 1;
+  const rightLimit = cell.y === cell.toroidalLimits[1] ? 1 : cell.y + 1;
+  const leftLimit = cell.y === 1 ? cell.toroidalLimits[1] : cell.y - 1;
 
   const blockSum = [
       [highLimit, leftLimit],
