@@ -15,7 +15,7 @@ function getNextGeneration(cells, generations) {
       ? areSeedCells
         ? getNextGeneration(initiateSeed(cells), generations - 1)
         : getNextGeneration(progressLife(cells), generations - 1)
-      : 'last gen'
+      : cells
 }
 
 function generateGenState(rawCells) {
@@ -44,8 +44,8 @@ function setNextGenState(gen) {
   for (let cell in gen) {
     newGen[cell] = changeCellState(gen[cell])
   }
-  console.log(gen);
-  console.log(newGen);
+  // console.log(gen);
+  // console.log(newGen);
   // because of the way this factory works, in order to be able to actively track the object changes without implementing some sort of timeout/promise setup we need to return a copy of our object at each change pass. I anticipate needing to store some sort of emit
   return newGen;
 }
@@ -91,4 +91,5 @@ function changeCellState(cell) {
   // this is what will need to change the visuals if I put this on screen
   return { ...cell, cellState, nextState: null}
 }
-export { getNextGeneration, generateGenState, generateNextGen, createCell, getNextCellState };
+
+export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState };

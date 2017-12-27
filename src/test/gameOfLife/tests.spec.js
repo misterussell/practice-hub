@@ -3,9 +3,11 @@ import { expect } from 'chai'
 import {
   getNextGeneration,
   generateGenState,
-  generateNextGen,
+  generateNextGenState,
+  setNextGenState,
   createCell,
-  getNextCellState
+  getNextCellState,
+  changeCellState
 } from '../../drills/gameOfLife/life';
 
 describe('Of the generation functions:', () => {
@@ -36,7 +38,6 @@ describe('Of the generation functions:', () => {
 
   it('getNextGeneration() should return an object when passed an array of arrays', () => {
     expect(getNextGeneration).to.be.a('function');
-    expect(getNextGeneration(gen, 1)).to.be.an('object');
   });
 
   it('getNextGeneration() should return an empty array is passed an empty array', () => {
@@ -56,19 +57,6 @@ describe('Of the generation functions:', () => {
   it('createCell() should correctly compute a unique hash', () => {
     let result = (1 * 15486047) + (y * 15487429);
     expect(testCell.cellHash).to.equal(result)
-  })
-
-  it('the cell object created should have properties: x, y, cellHash, cellState, toroidal limits, getNextState(), and getHash()', () => {
-    expect(testCell).to.have.property('x');
-    expect(testCell).to.have.property('y');
-    expect(testCell).to.have.property('cellHash');
-    expect(testCell).to.have.property('cellState');
-  });
-
-  it('a generation seed, the initial object, should not have an nextState property before the first tick', () => {
-    expect(testGen[testCell.cellHash]).to.not.have.property('nextState')
-    generateNextGen(testGen);
-    expect(testGen[testCell.cellHash]).to.have.property('nextState');
   });
 
   it('getNextCellState() should return an object', () => {
@@ -77,66 +65,142 @@ describe('Of the generation functions:', () => {
   });
 
   it('getNextCellState() should set the state of the cell to 0 or 1', () => {
-    2,3
     let secondCell = createCell(2, 3, cellState, toroidalLimits);
     expect(getNextCellState(testCell, testGen));
     expect(getNextCellState(secondCell, testGen));
   });
 
-  it('getNextCellState() should return a cell with a dead inner field when the sum of itself + neighbors is less than 3 or greater than 4, a live cell if the sum is 3, and an unchanged cell if the sum is 4', () => {
-    gen = [
-        [1, 1, 0, 0, 0],
-        [0, 1, 0, 0, 0],
-        [0, 0, 0, 1, 1],
-        [0, 0, 0, 1, 0],
-        [0, 0, 1, 0, 1]
-    ];
-    testCell = createCell(2, 2, 1, [5, 5]);
-    expect(testCell).to.not.have.property('nextState');
-    testGen = getNextGeneration(gen, 2);
-    expect(testGen[testCell.cellHash].nextState).to.equal(0);
-
-    let testCell2 = createCell(4, 4, 1, [5, 5]);
-    expect(testGen[testCell2.cellHash].nextState).to.equal(1);
-
-    let testCell3 = createCell(4, 3, 1, [5, 5]);
-    expect(testGen[testCell3.cellHash].nextState).to.equal(1);
-
+  it('generateNextGenState() should return an object', () => {
+    expect(generateNextGenState).to.be.a('function');
+    expect(generateNextGenState(testGen, 1)).to.be.an('object');
   });
 
-  it('getNextCellState() should return a live cell when the sum of itself + neighbors is 3', () => {
+});
+
+describe('Specific patterns should match for the toroidal arrays:', () => {
+
+  let gen;
+
+  function getHash(x, y) {
+    return (x * 15486047) + (y * 15487429);
+  }
+
+  beforeEach(() => {
     gen = [
-        [1, 1, 0, 0, 0],
-        [0, 1, 0, 0, 0],
-        [0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
         [0, 0, 0, 1, 0],
-        [0, 0, 1, 0, 1]
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0]
     ];
-    testCell = createCell(4, 4, 1, [5, 5]);
-    expect(testCell).to.not.have.property('nextState');
-    testGen = getNextGeneration(gen, 2);
-    expect(testGen[testCell.cellHash].nextState).to.equal(1);
   });
 
-  it('getNextCellState() should return an unchanged cell when the sum of itself + neighbors is 4', () => {
+  it('corners should share each other as neighbors', () => {
     gen = [
-        [1, 1, 0, 0, 0],
-        [0, 1, 0, 0, 0],
-        [0, 0, 0, 1, 1],
-        [0, 0, 0, 1, 0],
-        [0, 0, 1, 0, 1]
+        [1, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 1]
     ];
-    createCell(4, 3, 1, [5, 5]);
-    expect(testCell).to.not.have.property('nextState');
-    testGen = getNextGeneration(gen, 2);
-    expect(testGen[testCell.cellHash].nextState).to.equal(1);
+    let objectOutput = getNextGeneration(gen, 2);
+    expect(objectOutput[getHash(1, 1)].cellState).to.equal(1);
+    expect(objectOutput[getHash(1, 5)].cellState).to.equal(1);
+    expect(objectOutput[getHash(5, 1)].cellState).to.equal(1);
+    expect(objectOutput[getHash(5, 5)].cellState).to.equal(1);
+
+    objectOutput = getNextGeneration(gen, 1);
+    expect(objectOutput[getHash(1, 1)].cellState).to.equal(1);
+    expect(objectOutput[getHash(1, 5)].cellState).to.equal(1);
+    expect(objectOutput[getHash(5, 1)].cellState).to.equal(1);
+    expect(objectOutput[getHash(5, 5)].cellState).to.equal(1);
+
+    objectOutput = getNextGeneration(gen, 3);
+    expect(objectOutput[getHash(1, 1)].cellState).to.equal(1);
+    expect(objectOutput[getHash(1, 5)].cellState).to.equal(1);
+    expect(objectOutput[getHash(5, 1)].cellState).to.equal(1);
+    expect(objectOutput[getHash(5, 5)].cellState).to.equal(1);
   });
 
+});
 
-  it('generateNextGen() should return an object', () => {
-    expect(generateNextGen).to.be.a('function');
-    expect(generateNextGen(testGen)).to.be.an('object');
+describe('A cell should:', () => {
+
+  let gen;
+  let x;
+  let y;
+  let cellState;
+  let toroidalLimits;
+  let testCell;
+  let testGen;
+
+  function getHash(x, y) {
+    return (x * 15486047) + (y * 15487429);
+  }
+
+  beforeEach(() => {
+    gen = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0]
+    ];
+    x = 1;
+    y = 1;
+    cellState = true;
+    toroidalLimits = [5, 5]
+    testCell = createCell(x, y, cellState, toroidalLimits);
+    testGen = generateGenState(gen);
+  });
+
+  it('As a generation seed, not have a nextState property before the first tick', () => {
+    expect(testGen[testCell.cellHash]).to.not.have.property('nextState')
+    generateNextGenState(testGen);
+    expect(testGen[testCell.cellHash]).to.have.property('nextState');
+  });
+
+  it('have properties: x, y, cellHash, cellState, toroidal limits, getNextState(), and getHash()', () => {
+    expect(testCell).to.have.property('x');
+    expect(testCell).to.have.property('y');
+    expect(testCell).to.have.property('cellHash');
+    expect(testCell).to.have.property('cellState');
+  });
+
+  it('should die with < 2 neighbors', () => {
+    gen = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0]
+    ];
+    let objectOutput = getNextGeneration(gen, 2);
+    expect(objectOutput[getHash(4, 3)].cellState).to.equal(0);
+  });
+
+  it('should die with > 4 neighbors', () => {
+    gen = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0],
+        [0, 1, 1, 0, 0],
+        [0, 0, 1, 0, 0]
+    ];
+    let objectOutput = getNextGeneration(gen, 1);
+    expect(objectOutput[getHash(4, 3)].cellState).to.equal(0);
+  });
+
+  it('should not change with 3 neighbors', () => {
+    gen = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0]
+    ];
+    let objectOutput = getNextGeneration(gen, 1);
+    expect(objectOutput[getHash(4, 3)].cellState).to.equal(1);
   })
 
-
-})
+});
