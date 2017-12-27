@@ -5,7 +5,7 @@ This repo is a centralized location for me to store puzzle/practice JavaScript. 
 - Blog posts relevant to specific puzzles/practice will be stored in the directory for that puzzle.
 
 ## Drills
-- [Conway's Game of Life](/drills/gameOfLife/life.js)
+- [Conway's Game of Life](https://github.com/misterussell/practice-hub/blob/master/src/drills/gameOfLife/life.js)
 
 ## Dependencies
 - Framework: [create-react-app](https://github.com/facebookincubator/create-react-app)
