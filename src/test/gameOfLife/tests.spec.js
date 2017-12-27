@@ -179,7 +179,7 @@ describe('A cell should:', () => {
     expect(objectOutput[getHash(4, 3)].cellState).to.equal(0);
   });
 
-  it('should die with > 4 neighbors', () => {
+  it('should die with a sum of > 4 neighbors and itself', () => {
     gen = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
@@ -191,7 +191,7 @@ describe('A cell should:', () => {
     expect(objectOutput[getHash(4, 3)].cellState).to.equal(0);
   });
 
-  it('should not change with 3 neighbors', () => {
+  it('should become alive with a sum of 3 neighbors and itself', () => {
     gen = [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
@@ -201,6 +201,18 @@ describe('A cell should:', () => {
     ];
     let objectOutput = getNextGeneration(gen, 1);
     expect(objectOutput[getHash(4, 3)].cellState).to.equal(1);
+  });
+
+  it('should not change state with a sum of 4 neighbors and itself', () => {
+    gen = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0]
+    ];
+    let objectOutput = getNextGeneration(gen, 1);
+    expect(objectOutput[getHash(3, 3)].cellState).to.equal(0);
   })
 
 });
