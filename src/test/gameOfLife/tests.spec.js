@@ -160,7 +160,7 @@ describe('A cell should:', () => {
     expect(testGen[testCell.cellHash]).to.have.property('nextState');
   });
 
-  it('have properties: x, y, cellHash, cellState, toroidal limits, getNextState(), and getHash()', () => {
+  it('have properties: x, y, cellHash, cellState, and toroidal limits,', () => {
     expect(testCell).to.have.property('x');
     expect(testCell).to.have.property('y');
     expect(testCell).to.have.property('cellHash');
