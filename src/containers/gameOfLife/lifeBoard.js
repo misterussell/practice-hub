@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import GridParent from '../../components/GridParent';
+import Grid from '../../components/Grid';
 import Cell from '../../components/Cell';
 import '../../css/gameOfLife/gameOfLife.css'
 
@@ -51,7 +51,8 @@ export default class GameOfLife extends Component {
 
     return (
       <div className="universe">
-        <GridParent
+        <Grid
+          classname={ 'life-board' }
           bound={ this.state.totalBound }
           width={ this.state.boardWidth }
           gridSettings= { this.createGrid() }

@@ -12,7 +12,7 @@ export default class Cell extends Component {
       <div key={ this.props.key }
         style={ this.props.cellStyle }
         className={ this.props.classname }
-        onClick={ this.handleClick }
+        onClick={ this.handleClvcick }
       >
         <div className="hide">
         { this.props.text }

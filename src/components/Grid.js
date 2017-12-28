@@ -12,7 +12,7 @@ export default class Grid extends Component {
     }
 
     return (
-      <div className="life-board" style={ gridStyle }>
+      <div className={ this.props.classname } style={ gridStyle }>
         { this.props.children }
       </div>
     )
