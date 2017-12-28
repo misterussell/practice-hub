@@ -21,9 +21,10 @@ export default class GameOfLife extends Component {
       minBound: 5,
       userBound: 0,
       totalBound: 0,
-      cells: [],
       boardWidth: 500
     };
+
+    this.getGridSize = this.getGridSize.bind(this);
   }
 
   componentWillMount() {
@@ -45,7 +46,11 @@ export default class GameOfLife extends Component {
 
     return (
       <div className="universe">
-        <GridParent bound={ this.state.totalBound } width={ this.state.boardWidth } children={ cells }/>
+        <GridParent
+          bound={ this.state.totalBound }
+          width={ this.state.boardWidth }
+          cols= { this.getGridSize() }
+          children={ cells }/>
         <div className="world-meter">
           <Button callback={ this.reduceWorldSize.bind(this) } class={ 'game-button' } text={ 'Shrink' } />
           <Button callback={ this.growWorldSize.bind(this) } class ={ 'game-button' } text={ 'Grow' } />
@@ -58,13 +63,17 @@ export default class GameOfLife extends Component {
 
   }
 
+  getGridSize() {
+    return Array.from(new Array(this.state.totalBound), () => {
+      return `${ this.state.boardWidth / this.state.totalBound }px`
+    }).join(' ');
+  }
+
   handleSelect(e) {
     console.log('change cell to a live cell for seed generation');
   }
 
   reduceWorldSize(e) {
-    console.log('shrink');
-    console.log(this.state.userBound);
     this.setState((prevState, props) => {
       const minBoundCheck = prevState.userBound === 0 ? 0 : prevState.userBound -= 2;
       return { userBound: minBoundCheck, totalBound: prevState.userBound + prevState.minBound }
@@ -72,7 +81,6 @@ export default class GameOfLife extends Component {
   }
 
   growWorldSize(e) {
-    console.log('grow');
     this.setState((prevState, props) => {
       const maxBoundCheck = prevState.userBound === 10 ? 10 : prevState.userBound += 2;
       return { userBound: maxBoundCheck, totalBound: prevState.userBound + prevState.minBound }
