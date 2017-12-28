@@ -1,15 +1,21 @@
 .universe {
-  width: 100vw;
+  width: 100%
 }
 
 .life-board {
   display: grid;
   margin: 0 auto;
+  padding-bottom: 10px;
 }
 
 .cell {
   background: aliceblue;
+  border-radius: .5vw;
   margin-top: 5px;
   margin-left: 2.5px;
   margin-right: 2.5px
+}
+
+.hide {
+  display: hide;
 }

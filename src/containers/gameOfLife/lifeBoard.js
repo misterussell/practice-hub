@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Button from '../../components/Button';
 import GridParent from '../../components/GridParent';
-
+import Cell from '../../components/Cell';
 import '../../css/gameOfLife/gameOfLife.css'
 
 // import {
@@ -24,7 +24,7 @@ export default class GameOfLife extends Component {
       boardWidth: 500
     };
 
-    this.getGridSize = this.getGridSize.bind(this);
+    this.createGrid = this.createGrid.bind(this);
   }
 
   componentWillMount() {
@@ -41,7 +41,12 @@ export default class GameOfLife extends Component {
 
     let cells = Array.from(
       new Array((this.state.minBound + this.state.userBound)*(this.state.minBound + this.state.userBound)), (i, t) =>
-       <div key={ t } style={ cellStyle } className="cell" onClick={ this.handleSelect }>cell</div>
+        <Cell key={ t }
+          style={ cellStyle }
+          classname={ 'cell' }
+          callback={ this.handleSelect }
+          text={ 'text' }
+        />
      );
 
     return (
@@ -49,7 +54,7 @@ export default class GameOfLife extends Component {
         <GridParent
           bound={ this.state.totalBound }
           width={ this.state.boardWidth }
-          cols= { this.getGridSize() }
+          gridSettings= { this.createGrid() }
           children={ cells }/>
         <div className="world-meter">
           <Button callback={ this.reduceWorldSize.bind(this) } class={ 'game-button' } text={ 'Shrink' } />
@@ -63,7 +68,7 @@ export default class GameOfLife extends Component {
 
   }
 
-  getGridSize() {
+  createGrid() {
     return Array.from(new Array(this.state.totalBound), () => {
       return `${ this.state.boardWidth / this.state.totalBound }px`
     }).join(' ');

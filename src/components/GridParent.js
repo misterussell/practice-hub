@@ -7,8 +7,8 @@ export default class Grid extends Component {
   render() {
     let gridStyle = {
       width: this.props.width,
-      gridTemplateColumns: `${this.props.cols}`,
-      gridTemplateRows: `${ this.props.width / this.props.bound }px`
+      gridTemplateColumns: `${ this.props.gridSettings }`,
+      gridTemplateRows: `${ this.props.gridSettings }`
     }
 
     return (
