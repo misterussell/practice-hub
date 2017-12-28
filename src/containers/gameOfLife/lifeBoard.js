@@ -19,14 +19,27 @@ export default class GameOfLife extends Component {
     this.state = {
       minBound: 5,
       userBound: 0,
+      totalBound: 0,
       cells: [],
+      boardWidth: 500
     };
   }
 
+  componentWillMount() {
+    this.setState((prevState) => {
+      return { totalBound: prevState.userBound + prevState.minBound }
+    });
+  }
+
   render() {
+    let boardStyle = {
+      width: `${ this.state.boardWidth }px`,
+      'grid-template-columns': `${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px`,
+      'grid-template-rows': `${ this.state.boardWidth / this.state.totalBound}px ${ this.state.boardWidth / this.state.totalBound}px`
+    }
+
     let cellStyle = {
-      width: `${100/(this.state.minBound + this.state.userBound)}%`,
-      height: `${100/(this.state.minBound + this.state.userBound)}%`
+      height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`,
     };
 
     let cells = Array.from(
@@ -36,12 +49,12 @@ export default class GameOfLife extends Component {
 
     return (
       <div className="universe">
-        <div className="life-board">
+        <div className="life-board" style={ boardStyle }>
           { cells }
         </div>
         <div className="world-meter">
-          <Button callback={ this.reduceWorldSize.bind(this) } text={ 'Shrink' } />
-          <Button callback={ this.growWorldSize.bind(this) } text={ 'Grow' } />
+          <Button callback={ this.reduceWorldSize.bind(this) } class={ 'game-button' } text={ 'Shrink' } />
+          <Button callback={ this.growWorldSize.bind(this) } class ={ 'game-button' } text={ 'Grow' } />
         </div>
       </div>
     );
@@ -60,7 +73,7 @@ export default class GameOfLife extends Component {
     console.log(this.state.userBound);
     this.setState((prevState, props) => {
       const minBoundCheck = prevState.userBound === 0 ? 0 : prevState.userBound -= 2;
-      return { userBound: minBoundCheck }
+      return { userBound: minBoundCheck, totalBound: prevState.userBound + prevState.minBound }
     });
   }
 
@@ -68,7 +81,7 @@ export default class GameOfLife extends Component {
     console.log('grow');
     this.setState((prevState, props) => {
       const maxBoundCheck = prevState.userBound === 10 ? 10 : prevState.userBound += 2;
-      return { userBound: maxBoundCheck }
+      return { userBound: maxBoundCheck, totalBound: prevState.userBound + prevState.minBound }
     });
   }
 }
