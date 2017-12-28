@@ -10,8 +10,6 @@ class App extends Component {
 
   render() {
 
-    const childProps = {};
-
     return (
       <div className="App container">
       <Navbar fluid collapseOnSelect>
@@ -25,7 +23,7 @@ class App extends Component {
           <Nav pullRight>
             {
               [
-                <RouteNavItem key={1} href="/gameOfLife">
+                <RouteNavItem key={ 1 } href="/gameOfLife">
                   Game of Life
                 </RouteNavItem>
               ]
@@ -33,7 +31,7 @@ class App extends Component {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <Routes childProps={ childProps } />
+      <Routes />
     </div>
   );
   }
