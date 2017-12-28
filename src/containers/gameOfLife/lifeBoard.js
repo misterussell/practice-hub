@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
+import GridParent from '../../components/GridParent';
 
 import '../../css/gameOfLife/gameOfLife.css'
 
@@ -32,11 +33,6 @@ export default class GameOfLife extends Component {
   }
 
   render() {
-    let boardStyle = {
-      width: `${ this.state.boardWidth }px`,
-      'grid-template-columns': `${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px ${ this.state.boardWidth / this.state.totalBound }px`,
-      'grid-template-rows': `${ this.state.boardWidth / this.state.totalBound}px ${ this.state.boardWidth / this.state.totalBound}px`
-    }
 
     let cellStyle = {
       height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`,
@@ -49,9 +45,7 @@ export default class GameOfLife extends Component {
 
     return (
       <div className="universe">
-        <div className="life-board" style={ boardStyle }>
-          { cells }
-        </div>
+        <GridParent bound={ this.state.totalBound } width={ this.state.boardWidth } children={ cells }/>
         <div className="world-meter">
           <Button callback={ this.reduceWorldSize.bind(this) } class={ 'game-button' } text={ 'Shrink' } />
           <Button callback={ this.growWorldSize.bind(this) } class ={ 'game-button' } text={ 'Grow' } />
