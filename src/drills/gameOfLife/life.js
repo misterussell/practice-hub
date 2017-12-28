@@ -9,13 +9,13 @@ function getNextGeneration(cells, generations) {
   const areSeedCells = Array.isArray(cells) === true ? true : false;
   const live = generations > 0 ? true : false
 
-  return noCells
-    ? []
-    : live
-      ? areSeedCells
-        ? getNextGeneration(initiateSeed(cells), generations - 1)
-        : getNextGeneration(progressLife(cells), generations - 1)
-      : cells
+    return noCells
+      ? []
+      : live
+        ? areSeedCells
+          ? getNextGeneration(initiateSeed(cells), generations - 1)
+          : getNextGeneration(progressLife(cells), generations - 1)
+        : cells
 }
 
 function generateGenState(rawCells) {

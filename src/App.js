@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { Nav, NavItem, Navbar } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Nav, Navbar } from 'react-bootstrap';
 import Routes from './Routes';
 import RouteNavItem from './components/RouteNavItem';
 
-import './App.css';
-
-import { getNextGeneration } from './drills/gameOfLife/life';
+import './css/App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-  
+
   render() {
+
+    const childProps = {};
+
     return (
       <div className="App container">
-        <header className="App-header">
-          <h1 className="App-title">Practice Hub</h1>
-        </header>
+      <Navbar fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">Practice Hub</Link>
@@ -29,17 +25,17 @@ class App extends Component {
           <Nav pullRight>
             {
               [
-              <RouteNavItem key={ 1 } href="/gameOfLife">
-                Game of Life
-              </RouteNavItem>
+                <RouteNavItem key={1} href="/gameOfLife">
+                  Game of Life
+                </RouteNavItem>
               ]
             }
           </Nav>
         </Navbar.Collapse>
-        </Navbar>
-        <Routes childProps={ childProps } />
-      </div>
-    );
+      </Navbar>
+      <Routes childProps={ childProps } />
+    </div>
+  );
   }
 }
 
