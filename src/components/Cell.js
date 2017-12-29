@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import '../css/gameOfLife/gameOfLife.css';
 
 export default class Cell extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.handleClick = this.handleClick.bind(this);
   }
   render() {
@@ -12,7 +12,7 @@ export default class Cell extends Component {
       <div key={ this.props.key }
         style={ this.props.cellStyle }
         className={ this.props.classname }
-        onClick={ this.handleClvcick }
+        onClick={ this.handleClick }
       >
         <div className="hide">
         { this.props.text }
@@ -25,6 +25,5 @@ export default class Cell extends Component {
     e.preventDefault()
     this.props.callback()
   }
-
 
 }
