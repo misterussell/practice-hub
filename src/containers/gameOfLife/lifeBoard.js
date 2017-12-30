@@ -21,7 +21,8 @@ export default class GameOfLife extends Component {
       minBound: 5,
       userBound: 0,
       totalBound: 0,
-      boardWidth: 500
+      boardWidth: 500,
+      cells: []
     };
 
     this.createGrid = this.createGrid.bind(this);
@@ -31,6 +32,8 @@ export default class GameOfLife extends Component {
     this.setState((prevState) => {
       return { totalBound: prevState.userBound + prevState.minBound }
     });
+
+    this.createCells();
   }
 
   render() {
@@ -44,8 +47,8 @@ export default class GameOfLife extends Component {
         <Cell key={ t }
           style={ cellStyle }
           classname={ 'cell' }
-          callback={ this.handleSelect }
           text={ 'text' }
+          callback={ this.activateCell.bind(this) }
         />
      );
 
@@ -66,9 +69,21 @@ export default class GameOfLife extends Component {
   }
 
   initializeSeed() {
-
+    console.log('initializing seed generation');
   }
 
+  createCells() {
+    let cells = Array.from(new Array(this.state.totalBound), (val, index) => {
+      return '0'
+    });
+    this.setState((prevState) => {
+      return { cells }
+    });
+  }
+
+  activateCell() {
+    console.log('activate a specific cell');
+  }
   createGrid() {
     return Array.from(new Array(this.state.totalBound), () => {
       return `${ this.state.boardWidth / this.state.totalBound }px`
