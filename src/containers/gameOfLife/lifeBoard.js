@@ -32,8 +32,12 @@ export default class GameOfLife extends Component {
     this.setState((prevState) => {
       return { totalBound: prevState.userBound + prevState.minBound }
     });
+  }
 
-    this.createCells();
+  componentDidMount() {
+    this.setState((prevState) => {
+      return { cells: this.createCellArray(this.state.totalBound * this.state.totalBound) }
+    });
   }
 
   render() {
@@ -42,15 +46,15 @@ export default class GameOfLife extends Component {
       height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`,
     };
 
-    let cells = Array.from(
-      new Array((this.state.minBound + this.state.userBound)*(this.state.minBound + this.state.userBound)), (i, t) =>
-        <Cell key={ t }
+    let cells = this.state.cells.map((cell, i) => {
+      return <Cell key={ i }
           style={ cellStyle }
           classname={ 'cell' }
           text={ 'text' }
           callback={ this.activateCell.bind(this) }
+          cellNumber={ i + 1 }
         />
-     );
+    });
 
     return (
       <div className="universe">
@@ -58,8 +62,9 @@ export default class GameOfLife extends Component {
           classname={ 'life-board' }
           bound={ this.state.totalBound }
           width={ this.state.boardWidth }
-          gridSettings= { this.createGrid() }
-          children={ cells }/>
+          gridSettings= { this.createGrid() }>
+          { cells }
+        </Grid>
         <div className="world-meter">
           <Button callback={ this.reduceWorldSize.bind(this) } class={ 'game-button' } text={ 'Shrink' } />
           <Button callback={ this.growWorldSize.bind(this) } class ={ 'game-button' } text={ 'Grow' } />
@@ -68,22 +73,21 @@ export default class GameOfLife extends Component {
     );
   }
 
-  initializeSeed() {
-    console.log('initializing seed generation');
+  createCellArray(length) {
+    let cells = [];
+
+    for (var i = 0; i < length; i++) {
+      cells.push(0);
+    }
+
+    console.log(length + ' array created');
+    return cells;
   }
 
-  createCells() {
-    let cells = Array.from(new Array(this.state.totalBound), (val, index) => {
-      return '0'
-    });
-    this.setState((prevState) => {
-      return { cells }
-    });
+  activateCell(cell) {
+    console.log('activate a specific cell ' + cell);
   }
 
-  activateCell() {
-    console.log('activate a specific cell');
-  }
   createGrid() {
     return Array.from(new Array(this.state.totalBound), () => {
       return `${ this.state.boardWidth / this.state.totalBound }px`
@@ -95,16 +99,20 @@ export default class GameOfLife extends Component {
   }
 
   reduceWorldSize(e) {
-    this.setState((prevState, props) => {
+    this.setState((prevState) => {
       const minBoundCheck = prevState.userBound === 0 ? 0 : prevState.userBound -= 2;
-      return { userBound: minBoundCheck, totalBound: prevState.userBound + prevState.minBound }
+      return { userBound: minBoundCheck,
+               totalBound: prevState.userBound + prevState.minBound
+             }
     });
   }
 
   growWorldSize(e) {
-    this.setState((prevState, props) => {
+    this.setState((prevState) => {
       const maxBoundCheck = prevState.userBound === 10 ? 10 : prevState.userBound += 2;
-      return { userBound: maxBoundCheck, totalBound: prevState.userBound + prevState.minBound }
+      return { userBound: maxBoundCheck,
+               totalBound: prevState.userBound + prevState.minBound
+             }
     });
   }
 }

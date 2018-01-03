@@ -9,7 +9,7 @@ export default class Cell extends Component {
   }
   render() {
     return (
-      <div key={ this.props.key }
+      <div
         style={ this.props.cellStyle }
         className={ this.props.classname }
         onClick={ this.handleClick }
@@ -23,7 +23,7 @@ export default class Cell extends Component {
 
   handleClick(e) {
     e.preventDefault()
-    this.props.callback()
+    this.props.callback(this.props.cellNumber)
   }
 
 }
