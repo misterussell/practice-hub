@@ -43,13 +43,14 @@ export default class GameOfLife extends Component {
   render() {
 
     let cellStyle = {
-      height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`,
+      height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`
     };
 
     let cells = this.state.cells.map((cell, i) => {
+      const cellClass = cell === 0 ? 'cell dead' : 'cell alive'
       return <Cell key={ i }
           style={ cellStyle }
-          classname={ 'cell' }
+          classname={ cellClass }
           text={ 'text' }
           callback={ this.activateCell.bind(this) }
           cellNumber={ i + 1 }
@@ -80,22 +81,13 @@ export default class GameOfLife extends Component {
       cells.push(0);
     }
 
-    console.log(length + ' array created');
     return cells;
-  }
-
-  activateCell(cell) {
-    console.log('activate a specific cell ' + cell);
   }
 
   createGrid() {
     return Array.from(new Array(this.state.totalBound), () => {
       return `${ this.state.boardWidth / this.state.totalBound }px`
     }).join(' ');
-  }
-
-  handleSelect(e) {
-    console.log('change cell to a live cell for seed generation');
   }
 
   reduceWorldSize(e) {
@@ -114,12 +106,21 @@ export default class GameOfLife extends Component {
     this.setState((prevState) => {
       const maxBoundCheck = prevState.userBound === 10 ? 10 : prevState.userBound += 2;
       const newTotalBound = maxBoundCheck + prevState.minBound;
-      const newCells = ((newTotalBound * newTotalBound) - (prevState.totalBound * prevState.totalBound));
+      const totalNewCells = ((newTotalBound * newTotalBound) - (prevState.totalBound * prevState.totalBound));
       return {
               userBound: maxBoundCheck,
               totalBound: newTotalBound,
-              cells: [...prevState.cells, ...this.createCellArray(newCells)]
+              cells: [...prevState.cells, ...this.createCellArray(totalNewCells)]
              }
     });
+  }
+
+  activateCell(cell) {
+    console.log('activated');
+    this.setState((prevState) => {
+      const cellState = prevState.cells[cell] === 0 ? 1 : 0;
+      const cells = [...prevState.cells.slice(0, cell - 1), cellState, ...prevState.cells.slice(cell)]
+      return { cells }
+    })
   }
 }
