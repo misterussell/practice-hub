@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Cell from '../../components/Cell';
 import '../../css/gameOfLife/gameOfLife.css'
 
-// import {
-//   getNextGeneration,
-//   generateGenState,
-//   generateNextGenState,
-//   createCell,
-//   getNextCellState,
-//   changeCellState
-// } from '../../drills/gameOfLife/life';
+import {
+  getNextGeneration,
+  generateGenState,
+  generateNextGenState,
+  createCell,
+  getNextCellState,
+  changeCellState
+} from '../../drills/gameOfLife/life';
 
 export default class GameOfLife extends Component {
   constructor() {
@@ -22,7 +22,8 @@ export default class GameOfLife extends Component {
       userBound: 0,
       totalBound: 0,
       boardWidth: 500,
-      cells: []
+      cells: [],
+      hashMap: {}
     };
 
     this.createGrid = this.createGrid.bind(this);
@@ -82,6 +83,10 @@ export default class GameOfLife extends Component {
     }
 
     return cells;
+  }
+
+  createHashableArray(cells) {
+
   }
 
   createGrid() {

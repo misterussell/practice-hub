@@ -1,4 +1,11 @@
-import { expect } from 'chai'
+import React from 'react';
+import chai, { expect } from 'chai'
+import Enzyme from 'enzyme';
+import chaiEnzyme from 'chai-enzyme';
+import { shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 import {
   getNextGeneration,
@@ -214,5 +221,14 @@ describe('A cell should:', () => {
     let objectOutput = getNextGeneration(gen, 1);
     expect(objectOutput[getHash(3, 3)].cellState).to.equal(0);
   })
+
+});
+
+describe('Main section component', () => {
+  let gameOfLife;
+
+  beforeEach(() => {
+    gameOfLife = shallow(<GameOfLife />);
+  });
 
 });
