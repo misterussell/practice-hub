@@ -42,18 +42,18 @@ export default class GameOfLife extends Component {
 
   render() {
 
-    let cellStyle = {
-      height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`
+    const cellStyle = {
+      height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`,
     };
 
     let cells = this.state.cells.map((cell, i) => {
-      const cellClass = cell === 0 ? 'cell dead' : 'cell alive'
       return <Cell key={ i }
           style={ cellStyle }
-          classname={ cellClass }
+          classname={ 'cell' }
           text={ 'text' }
           callback={ this.activateCell.bind(this) }
-          cellNumber={ i + 1 }
+          cellNumber={ i }
+          cellState={ cell }
         />
     });
 
@@ -116,11 +116,11 @@ export default class GameOfLife extends Component {
   }
 
   activateCell(cell) {
-    console.log('activated');
     this.setState((prevState) => {
       const cellState = prevState.cells[cell] === 0 ? 1 : 0;
-      const cells = [...prevState.cells.slice(0, cell - 1), cellState, ...prevState.cells.slice(cell)]
-      return { cells }
+      const copy = [...prevState.cells]
+      copy[cell] = cellState;
+      return { cells: copy }
     })
   }
 }

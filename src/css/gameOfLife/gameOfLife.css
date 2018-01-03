@@ -9,15 +9,10 @@
 }
 
 .cell {
-  background: aliceblue;
   border-radius: .5vw;
   margin-top: 2.5px;
   margin-left: 2.5px;
-  margin-right: 2.5px
-
-  .alive {
-    background: #7BFECD;
-  }
+  margin-right: 2.5px;
 }
 
 .hide {
