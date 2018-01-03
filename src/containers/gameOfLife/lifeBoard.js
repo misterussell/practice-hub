@@ -101,8 +101,11 @@ export default class GameOfLife extends Component {
   reduceWorldSize(e) {
     this.setState((prevState) => {
       const minBoundCheck = prevState.userBound === 0 ? 0 : prevState.userBound -= 2;
+      const newTotalBound = prevState.userBound + prevState.minBound;
+      const newCells = prevState.cells.slice(0, (newTotalBound * newTotalBound));
       return { userBound: minBoundCheck,
-               totalBound: prevState.userBound + prevState.minBound
+               totalBound: newTotalBound,
+               cells: newCells
              }
     });
   }
@@ -110,8 +113,12 @@ export default class GameOfLife extends Component {
   growWorldSize(e) {
     this.setState((prevState) => {
       const maxBoundCheck = prevState.userBound === 10 ? 10 : prevState.userBound += 2;
-      return { userBound: maxBoundCheck,
-               totalBound: prevState.userBound + prevState.minBound
+      const newTotalBound = maxBoundCheck + prevState.minBound;
+      const newCells = ((newTotalBound * newTotalBound) - (prevState.totalBound * prevState.totalBound));
+      return {
+              userBound: maxBoundCheck,
+              totalBound: newTotalBound,
+              cells: [...prevState.cells, ...this.createCellArray(newCells)]
              }
     });
   }
