@@ -1,7 +1,6 @@
 import React from 'react';
 import chai, { expect } from 'chai'
 import Enzyme from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -16,6 +15,8 @@ import {
   getNextCellState,
   changeCellState
 } from '../../drills/gameOfLife/life';
+
+import GameOfLife from '../../containers/gameOfLife/lifeBoard';
 
 describe('Of the generation functions:', () => {
 
@@ -229,6 +230,10 @@ describe('Main section component', () => {
 
   beforeEach(() => {
     gameOfLife = shallow(<GameOfLife />);
+  });
+
+  it('calls componentDidMount', () => {
+    console.log('test');
   });
 
 });

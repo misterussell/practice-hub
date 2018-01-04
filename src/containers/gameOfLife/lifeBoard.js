@@ -86,7 +86,7 @@ export default class GameOfLife extends Component {
   }
 
   createHashableArray(cells) {
-
+    
   }
 
   createGrid() {
