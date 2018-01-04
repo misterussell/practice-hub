@@ -1,10 +1,10 @@
-import React from 'react';
+// import React from 'react';
 import chai, { expect } from 'chai'
-import Enzyme from 'enzyme';
-import { shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16';
+// import Enzyme from 'enzyme';
+// import { shallow } from 'enzyme'
+// import Adapter from 'enzyme-adapter-react-16';
 
-Enzyme.configure({ adapter: new Adapter() });
+// Enzyme.configure({ adapter: new Adapter() });
 
 import {
   getNextGeneration,
@@ -13,10 +13,12 @@ import {
   setNextGenState,
   createCell,
   getNextCellState,
-  changeCellState
+  changeCellState,
+  createCellArray,
+  createHashableArray
 } from '../../drills/gameOfLife/life';
 
-import GameOfLife from '../../containers/gameOfLife/lifeBoard';
+// import GameOfLife from '../../containers/gameOfLife/lifeBoard';
 
 describe('Of the generation functions:', () => {
 
@@ -81,6 +83,17 @@ describe('Of the generation functions:', () => {
   it('generateNextGenState() should return an object', () => {
     expect(generateNextGenState).to.be.a('function');
     expect(generateNextGenState(testGen, 1)).to.be.an('object');
+  });
+
+  it('createCellArray() should return an array of the specified length', () => {
+    expect(createCellArray(10)).to.be.an('array');
+    expect(createCellArray(10)).to.have.lengthOf(10);
+  });
+
+  it('createHashableArray() should return an array', () => {
+    expect(createHashableArray([0, 0, 0, 0, 0, 0, 0, 0, 0], 3)).to.be.an('array');
+    expect(createHashableArray([0, 0, 0, 0, 0, 0, 0, 0, 0], 3)).to.deep.equal([[0,0,0],[0,0,0],[0,0,0]]);
+    expect(createHashableArray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], 5)).to.deep.equal([[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0]]);
   });
 
 });
@@ -225,15 +238,15 @@ describe('A cell should:', () => {
 
 });
 
-describe('Main section component', () => {
-  let gameOfLife;
-
-  beforeEach(() => {
-    gameOfLife = shallow(<GameOfLife />);
-  });
-
-  it('calls componentDidMount', () => {
-    console.log('test');
-  });
-
-});
+// describe('Main section component', () => {
+//   let gameOfLife;
+//
+//   beforeEach(() => {
+//     gameOfLife = shallow(<GameOfLife />);
+//   });
+//
+//   it('calls componentDidMount', () => {
+//     console.log('test');
+//   });
+//
+// });

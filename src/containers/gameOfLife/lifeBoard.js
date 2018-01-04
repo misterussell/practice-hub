@@ -11,7 +11,9 @@ import {
   generateNextGenState,
   createCell,
   getNextCellState,
-  changeCellState
+  changeCellState,
+  createCellArray,
+  createHashableArray
 } from '../../drills/gameOfLife/life';
 
 export default class GameOfLife extends Component {
@@ -37,7 +39,7 @@ export default class GameOfLife extends Component {
 
   componentDidMount() {
     this.setState((prevState) => {
-      return { cells: this.createCellArray(this.state.totalBound * this.state.totalBound) }
+      return { cells: createCellArray(this.state.totalBound * this.state.totalBound) }
     });
   }
 
@@ -75,20 +77,6 @@ export default class GameOfLife extends Component {
     );
   }
 
-  createCellArray(length) {
-    let cells = [];
-
-    for (var i = 0; i < length; i++) {
-      cells.push(0);
-    }
-
-    return cells;
-  }
-
-  createHashableArray(cells) {
-    
-  }
-
   createGrid() {
     return Array.from(new Array(this.state.totalBound), () => {
       return `${ this.state.boardWidth / this.state.totalBound }px`
@@ -115,7 +103,7 @@ export default class GameOfLife extends Component {
       return {
               userBound: maxBoundCheck,
               totalBound: newTotalBound,
-              cells: [...prevState.cells, ...this.createCellArray(totalNewCells)]
+              cells: [...prevState.cells, ...createCellArray(totalNewCells)]
              }
     });
   }

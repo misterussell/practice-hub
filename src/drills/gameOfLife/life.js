@@ -92,4 +92,24 @@ function changeCellState(cell) {
   return { ...cell, cellState, nextState: null}
 }
 
-export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState };
+function createCellArray(length) {
+  let cells = [];
+
+  for (var i = 0; i < length; i++) {
+    cells.push(0);
+  }
+
+  return cells;
+}
+
+function createHashableArray(cells, totalBound) {
+  let hashableArray = [];
+
+  for (let i = 0; i < totalBound * totalBound; i += totalBound) {
+    hashableArray.push(cells.slice(i, i + totalBound));
+  }
+
+  return hashableArray;
+}
+
+export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray };
