@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import '../css/gameOfLife/gameOfLife.css';
 
 export default class Cell extends Component {
+  static propTypes = {
+    cellState: PropTypes.number,
+    cellStyle: PropTypes.object,
+    classname: PropTypes.string,
+    text: PropTypes.string,
+    handleClick: PropTypes.func,
+    cellNumber: PropTypes.number
+  }
+
   constructor() {
     super();
     this.state = {

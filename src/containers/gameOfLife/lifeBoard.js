@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
@@ -70,8 +70,8 @@ export default class GameOfLife extends Component {
           { cells }
         </Grid>
         <div className="world-meter">
-          <Button callback={ this.reduceWorldSize.bind(this) } class={ 'game-button' } text={ 'Shrink' } />
-          <Button callback={ this.growWorldSize.bind(this) } class ={ 'game-button' } text={ 'Grow' } />
+          <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button' } text={ 'Shrink' } />
+          <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button' } text={ 'Grow' } />
         </div>
       </div>
     );
