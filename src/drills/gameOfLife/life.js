@@ -112,4 +112,4 @@ function createHashableArray(cells, totalBound) {
   return hashableArray;
 }
 
-export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray };
+export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray, pipe };

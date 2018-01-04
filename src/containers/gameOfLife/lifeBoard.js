@@ -3,6 +3,7 @@ import React, { Component} from 'react';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Cell from '../../components/Cell';
+
 import '../../css/gameOfLife/gameOfLife.css'
 
 import {
@@ -13,7 +14,8 @@ import {
   getNextCellState,
   changeCellState,
   createCellArray,
-  createHashableArray
+  createHashableArray,
+  pipe
 } from '../../drills/gameOfLife/life';
 
 export default class GameOfLife extends Component {
@@ -38,8 +40,12 @@ export default class GameOfLife extends Component {
   }
 
   componentDidMount() {
+    let cells = createCellArray(this.state.totalBound * this.state.totalBound);
+    let hashableArray = createHashableArray(cells, this.state.totalBound);
+    let hashMap = generateGenState(hashableArray);
+
     this.setState((prevState) => {
-      return { cells: createCellArray(this.state.totalBound * this.state.totalBound) }
+      return { cells, hashMap }
     });
   }
 
