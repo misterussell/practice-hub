@@ -8,6 +8,6 @@ import LifeBoard from './containers/gameOfLife/lifeBoard';
 export default () =>
   <Switch>
     <Route path="/" exact component={ Home } />
-    <Route path='/gameOfLife' exact component={ LifeBoard } />
+    <Route path='/gameOfLife' component={ LifeBoard } />
     <Route component={ NotFound } />
   </Switch>;
