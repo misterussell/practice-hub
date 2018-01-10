@@ -11,6 +11,7 @@ import defaults from '../defaults';
 
 import GameOfLife from '../../containers/gameOfLife/lifeBoard';
 import Button from '../../components/Button';
+import Cell from '../../components/Cell';
 
 describe('Game Of Life component:', () => {
 
@@ -36,7 +37,7 @@ describe('Game Of Life component:', () => {
     expect(game.state('minBound')).to.equal(5);
   });
 
-  it('should have a minBound state of 5', () => {
+  it('should have a boardWidth state of 500', () => {
     const game = mount(<GameOfLife />);
     expect(game.state('boardWidth')).to.equal(500);
   });
@@ -51,5 +52,9 @@ describe('Game Of Life component:', () => {
     expect(game.find(Button)).to.have.length(2);
   });
 
-
+  it('should render 25 Cells by default', () => {
+    const game = shallow(<GameOfLife />);
+    expect(game.find(Cell)).to.have.length(25);
+    expect(game.find(Cell)).to.not.have.length(5);
+  });
 });
