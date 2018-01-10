@@ -30,12 +30,14 @@
     "chai-enzyme": "^0.8.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "jsdom": "^11.5.1",
     "mocha": "^4.0.1",
     "prop-types": "^15.6.0",
     "react-addons-test-utils": "^15.6.2",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
-    "react-test-renderer": "^16.2.0"
+    "react-test-renderer": "^16.2.0",
+    "sinon": "^4.1.4"
   }
 }
