@@ -15,6 +15,11 @@ import Cell from '../../components/Cell';
 
 describe('Game Of Life component:', () => {
 
+  it('should exist', () => {
+    const game = mount(<GameOfLife />);
+    expect(game).to.exist;
+  });
+
   it('calls componentDidMount', () => {
     spy(GameOfLife.prototype, 'componentDidMount');
     const game = mount(<GameOfLife />);
@@ -25,11 +30,6 @@ describe('Game Of Life component:', () => {
     spy(GameOfLife.prototype, 'componentWillMount');
     const game = mount(<GameOfLife />);
     expect(GameOfLife.prototype.componentWillMount.calledOnce).to.equal(true);
-  });
-
-  it('should exist', () => {
-    const game = mount(<GameOfLife />);
-    expect(game).to.exist;
   });
 
   it('should have a minBound state of 5', () => {
