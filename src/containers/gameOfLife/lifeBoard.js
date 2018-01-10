@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Cell from '../../components/Cell';
 
-import '../../css/gameOfLife/gameOfLife.css'
+// import '../../css/gameOfLife/gameOfLife.css'
 
 import {
   getNextGeneration,

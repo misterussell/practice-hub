@@ -7,3 +7,6 @@
 
 2. Because style sheets are being imported directly into the modules testing is getting stuck on the first class definition
   - Will need to compile styles with SASS and then import these in the header to be able to continue testing components.
+
+3. SASS does compile correctly as an import but when trying to link the compiled stylesheet styles do not flow down.
+  - Why is it importing correctly into the component but not from the `index.html`

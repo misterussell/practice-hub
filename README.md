@@ -15,3 +15,4 @@ This repo is a centralized location for me to store puzzle/practice JavaScript. 
   - To handle the [depreciation](https://github.com/mochajs/mocha/wiki/compilers-deprecation) of `--compilers` you will can swap out `--compilers js:babel-core/register ` with `"--require babel-core/register`
   - [TDD Guide](https://github.com/mawrkus/js-unit-testing-guide#unit-tests)
 - Babel Plugins: [Object Rest Spread](https://babeljs.io/docs/plugins/transform-object-rest-spread/)
+- CSS compiled with [SASS](http://sass-lang.com/)

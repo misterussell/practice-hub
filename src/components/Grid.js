@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import '../css/gameOfLife/gameOfLife.css'
+// import '../css/gameOfLife/gameOfLife.css'
 
 export default class Grid extends Component {
   static propTypes = {
