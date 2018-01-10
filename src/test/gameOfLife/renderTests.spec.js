@@ -57,4 +57,36 @@ describe('Game Of Life component:', () => {
     expect(game.find(Cell)).to.have.length(25);
     expect(game.find(Cell)).to.not.have.length(5);
   });
+
+  it('the updateCell() method should change the state.cells value of an empty cell to 1', () => {
+    let testArray = Array.from(new Array(25), i => {
+      return 0;
+    });
+    const game = shallow(<GameOfLife />);
+    game.instance().updateCell(0);
+    testArray[0] = 1;
+    expect(game.state('cells')).to.deep.equal(testArray);
+    game.instance().updateCell(1);
+    testArray[1] = 1;
+    expect(game.state('cells')).to.deep.equal(testArray);
+  });
+
+  it('the updateCell() method should change the state.cells value of an alive cell to 0', () => {
+    let testArray = Array.from(new Array(25), i => {
+      return 0;
+    });
+    testArray[0] = 1;
+    const game = shallow(<GameOfLife />);
+    game.instance().updateCell(0);
+    expect(game.state('cells')).to.deep.equal(testArray);
+  });
+
+  it('the updateCell() method should not change anything if the cell does not exist', () => {
+    const game = shallow(<GameOfLife />);
+    console.log(game.instance().updateCell(50));
+    
+  })
+
+
+
 });

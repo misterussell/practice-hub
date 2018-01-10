@@ -31,13 +31,13 @@ export default class GameOfLife extends Component {
     };
 
     this.createGrid = this.createGrid.bind(this);
-  }
+  };
 
   componentWillMount() {
     this.setState((prevState) => {
       return { totalBound: prevState.userBound + prevState.minBound }
     });
-  }
+  };
 
   componentDidMount() {
     let cells = createCellArray(this.state.totalBound * this.state.totalBound);
@@ -47,7 +47,7 @@ export default class GameOfLife extends Component {
     this.setState((prevState) => {
       return { cells, hashMap }
     });
-  }
+  };
 
   render() {
 
@@ -60,7 +60,7 @@ export default class GameOfLife extends Component {
           style={ cellStyle }
           classname={ 'cell' }
           text={ 'text' }
-          callback={ this.activateCell.bind(this) }
+          callback={ this.updateCell.bind(this) }
           cellNumber={ i }
           cellState={ cell }
         />
@@ -81,13 +81,13 @@ export default class GameOfLife extends Component {
         </div>
       </div>
     );
-  }
+  };
 
   createGrid() {
     return Array.from(new Array(this.state.totalBound), () => {
       return `${ this.state.boardWidth / this.state.totalBound }px`
     }).join(' ');
-  }
+  };
 
   reduceWorldSize(e) {
     this.setState((prevState) => {
@@ -99,7 +99,7 @@ export default class GameOfLife extends Component {
                cells: newCells
              }
     });
-  }
+  };
 
   growWorldSize(e) {
     this.setState((prevState) => {
@@ -112,14 +112,16 @@ export default class GameOfLife extends Component {
               cells: [...prevState.cells, ...createCellArray(totalNewCells)]
              }
     });
-  }
+  };
 
-  activateCell(cell) {
-    this.setState((prevState) => {
-      const cellState = prevState.cells[cell] === 0 ? 1 : 0;
-      const copy = [...prevState.cells]
-      copy[cell] = cellState;
-      return { cells: copy }
-    })
-  }
-}
+  updateCell(cell) {
+    return this.state.cells[0] === undefined
+      ? 'does not exist'
+      : this.setState((prevState) => {
+          const cellState = prevState.cells[cell] === 0 ? 1 : 0;
+          const copy = [...prevState.cells]
+          copy[cell] = cellState;
+          return { cells: copy }
+        });
+      };
+};
