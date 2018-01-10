@@ -1,10 +1,10 @@
-// import React from 'react';
+import React from 'react';
 import chai, { expect } from 'chai'
-// import Enzyme from 'enzyme';
-// import { shallow } from 'enzyme'
-// import Adapter from 'enzyme-adapter-react-16';
+import Enzyme from 'enzyme';
+import { shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16';
 
-// Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({ adapter: new Adapter() });
 
 import {
   getNextGeneration,
@@ -18,7 +18,7 @@ import {
   createHashableArray
 } from '../../drills/gameOfLife/life';
 
-// import GameOfLife from '../../containers/gameOfLife/lifeBoard';
+import GameOfLife from '../../containers/gameOfLife/lifeBoard';
 
 describe('Of the generation functions:', () => {
 
@@ -237,16 +237,3 @@ describe('A cell should:', () => {
   })
 
 });
-
-// describe('Main section component', () => {
-//   let gameOfLife;
-//
-//   beforeEach(() => {
-//     gameOfLife = shallow(<GameOfLife />);
-//   });
-//
-//   it('calls componentDidMount', () => {
-//     console.log('test');
-//   });
-//
-// });
