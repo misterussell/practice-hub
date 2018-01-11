@@ -81,12 +81,8 @@ describe('Game Of Life component:', () => {
     expect(game.state('cells')).to.deep.equal(testArray);
   });
 
-  it('the updateCell() method should not change anything if the cell does not exist', () => {
-    const game = shallow(<GameOfLife />);
-    console.log(game.instance().updateCell(50));
-    
-  })
-
-
+  it('the growWorldSize() method should update the userBound, totalBound, and cells state', () =>{
+    'do stuff'
+  });
 
 });

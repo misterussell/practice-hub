@@ -116,7 +116,7 @@ export default class GameOfLife extends Component {
 
   updateCell(cell) {
     return this.state.cells[0] === undefined
-      ? 'does not exist'
+      ? console.log('does not exist')
       : this.setState((prevState) => {
           const cellState = prevState.cells[cell] === 0 ? 1 : 0;
           const copy = [...prevState.cells]
