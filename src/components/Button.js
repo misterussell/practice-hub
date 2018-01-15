@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap'
 import PropTypes from 'prop-types';
 
 // import '../css/Button.css';
 
-export default class Button extends Component {
+export default class GameButton extends Component {
   static propTypes = {
     classname: PropTypes.string,
     text: PropTypes.string,
@@ -17,10 +18,12 @@ export default class Button extends Component {
 
   render() {
     return (
-      <button onClick={ this.handleClick }
-        className={ this.props.classname }>
+      <Button
+        onClick={ this.handleClick }
+        bsStyle="primary"
+      >
         { this.props.text }
-      </button>
+      </Button>
     );
   }
 

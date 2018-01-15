@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import { ButtonGroup } from 'react-bootstrap'
 
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
@@ -77,9 +78,11 @@ export default class GameOfLife extends Component {
           { cells }
         </Grid>
         <div className="world-meter">
-          <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button' } text={ 'Shrink' }/>
-          <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
-          <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button' } text={ 'Grow' } />
+          <ButtonGroup bsStyle="large">
+            <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button' } text={ 'Shrink' }/>
+            <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
+            <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button' } text={ 'Grow' } />
+          </ButtonGroup>
         </div>
       </div>
     );

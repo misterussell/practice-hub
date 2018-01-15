@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
-import Routes from './Routes';
-import RouteNavItem from './components/RouteNavItem';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-// import './css/App.css';
+import Routes from './Routes';
 
 class App extends Component {
 
@@ -21,13 +20,16 @@ class App extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            {
-              [
-                <RouteNavItem key={ 1 } href="/gameOfLife">
-                  Game of Life
-                </RouteNavItem>
-              ]
-            }
+            <LinkContainer to="/gameOfLife">
+              <NavItem eventKey={1}>
+                Game Of Life
+              </NavItem>
+            </LinkContainer>
+            <LinkContainer to='/fooBar'>
+              <NavItem eventKey={2}>
+                Foo Bar
+              </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
