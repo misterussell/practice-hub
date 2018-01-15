@@ -27,7 +27,8 @@ export default class GameOfLife extends Component {
       totalBound: 0,
       boardWidth: 500,
       cells: [],
-      hashMap: {}
+      hashMap: {},
+      gameState: false
     };
 
     this.createGrid = this.createGrid.bind(this);
@@ -60,7 +61,7 @@ export default class GameOfLife extends Component {
           style={ cellStyle }
           classname={ 'cell' }
           text={ 'text' }
-          callback={ this.updateCell.bind(this) }
+          callback={ this.handleCellClick.bind(this) }
           cellNumber={ i }
           cellState={ cell }
         />
@@ -76,7 +77,8 @@ export default class GameOfLife extends Component {
           { cells }
         </Grid>
         <div className="world-meter">
-          <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button' } text={ 'Shrink' } />
+          <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button' } text={ 'Shrink' }/>
+          <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
           <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button' } text={ 'Grow' } />
         </div>
       </div>
@@ -114,8 +116,8 @@ export default class GameOfLife extends Component {
     });
   };
 
-  updateCell(cell) {
-    return this.state.cells[0] === undefined
+  handleCellClick(cell) {
+    return this.state.cells[cell] === undefined
       ? console.log('does not exist')
       : this.setState((prevState) => {
           const cellState = prevState.cells[cell] === 0 ? 1 : 0;
@@ -123,5 +125,14 @@ export default class GameOfLife extends Component {
           copy[cell] = cellState;
           return { cells: copy }
         });
-      };
+  };
+
+  updateGameState() {
+    // this.setState((prevState) => {
+    //   return { gameState: true }
+    // });
+    return this.state.GameState === true
+      ? console.log('pause the game')
+      : console.log('start the game')
+  }
 };

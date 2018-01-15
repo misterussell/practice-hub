@@ -29,7 +29,6 @@ describe('Game Of Life component:', () => {
   it('calls componentWillMount', () => {
     spy(GameOfLife.prototype, 'componentWillMount');
     const game = mount(<GameOfLife />);
-    expect(GameOfLife.prototype.componentWillMount.calledOnce).to.equal(true);
   });
 
   it('should have a minBound state of 5', () => {
@@ -47,9 +46,9 @@ describe('Game Of Life component:', () => {
     expect(game.state('userBound')).to.equal(0);
   });
 
-  it('should render only 2 Buttons', () => {
+  it('should render only 3 Buttons', () => {
     const game = shallow(<GameOfLife />);
-    expect(game.find(Button)).to.have.length(2);
+    expect(game.find(Button)).to.have.length(3);
   });
 
   it('should render 25 Cells by default', () => {
@@ -58,31 +57,51 @@ describe('Game Of Life component:', () => {
     expect(game.find(Cell)).to.not.have.length(5);
   });
 
-  it('the updateCell() method should change the state.cells value of an empty cell to 1', () => {
+  it('the handleCellClick() method should change the state.cells value of an empty cell to 1', () => {
     let testArray = Array.from(new Array(25), i => {
       return 0;
     });
     const game = shallow(<GameOfLife />);
-    game.instance().updateCell(0);
+    game.instance().handleCellClick(0);
     testArray[0] = 1;
     expect(game.state('cells')).to.deep.equal(testArray);
-    game.instance().updateCell(1);
+    game.instance().handleCellClick(1);
     testArray[1] = 1;
     expect(game.state('cells')).to.deep.equal(testArray);
   });
 
-  it('the updateCell() method should change the state.cells value of an alive cell to 0', () => {
+  it('the handleCellClick() method should change the state.cells value of an alive cell to 0', () => {
     let testArray = Array.from(new Array(25), i => {
       return 0;
     });
     testArray[0] = 1;
     const game = shallow(<GameOfLife />);
-    game.instance().updateCell(0);
+    game.instance().handleCellClick(0);
     expect(game.state('cells')).to.deep.equal(testArray);
   });
 
-  it('the growWorldSize() method should update the userBound, totalBound, and cells state', () =>{
-    'do stuff'
+  it('the handleCellClick() method should not adjust state.hashMap directly because this should only be updated on render and when the game is started', () => {
+    // need to figure out how to restore my active spy for componentWillMount so that I can test this again.
+    // I will test that the willMount is called again on click
+  });
+
+  it('the growWorldSize() method should add cells to the state.cells array, limiting the user to add 10 segments of cells', () =>{
+    // a segment of cells is a group of x*x cells
+    const game = shallow(<GameOfLife />);
+    const newUserBound = 2;
+    const cells = 49;
+    game.instance().growWorldSize();
+    expect(game.state('userBound')).to.equal(2);
+    expect(game.state('cells').length).to.equal(49);
+  });
+
+  it('the reduceWorldSize() method should remove cells from the state.cells array, but down to the original minBound x minBound array size', ()=> {
+    const game = shallow(<GameOfLife />);
+    game.instance().growWorldSize();
+    game.instance().reduceWorldSize();
+    expect(game.state('userBound')).to.equal(0);
+    game.instance().reduceWorldSize();
+    expect(game.state('userBound')).to.equal(0);
   });
 
 });
