@@ -12,12 +12,14 @@ export default class Cell extends Component {
     cellNumber: PropTypes.number
   };
 
-  constructor() {
-    super();
+  constructor(...args) {
+    super(...args);
+
+    this.handleClick = this.handleClick.bind(this);
+
     this.state = {
       cellStyle: {}
     };
-    this.handleClick = this.handleClick.bind(this);
   };
 
   componentDidMount() {

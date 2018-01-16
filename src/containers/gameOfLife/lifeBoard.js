@@ -4,6 +4,7 @@ import { ButtonGroup } from 'react-bootstrap'
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Cell from '../../components/Cell';
+import GameModal from '../../components/GameModal';
 
 // import '../../css/gameOfLife/gameOfLife.css'
 
@@ -17,8 +18,11 @@ import {
 } from '../../drills/gameOfLife/life';
 
 export default class GameOfLife extends Component {
-  constructor() {
-    super();
+  constructor(...args) {
+    super(...args);
+
+    this.createGrid = this.createGrid.bind(this);
+
     this.state = {
       minBound: 5,
       userBound: 0,
@@ -28,18 +32,17 @@ export default class GameOfLife extends Component {
       hashMap: {},
       gameState: false,
       pendingChanges: {},
-      interval: null
+      interval: null,
+      modal: false
     };
-
-    this.createGrid = this.createGrid.bind(this);
-  };
+  }
 
   componentWillMount() {
     this.setState((prevState) => {
       return { totalBound: prevState.userBound + prevState.minBound }
     });
 
-  };
+  }
 
   componentDidMount() {
     let cells = createCellArray(this.state.totalBound * this.state.totalBound);
@@ -47,7 +50,7 @@ export default class GameOfLife extends Component {
     this.setState((prevState) => {
       return { cells }
     });
-  };
+  }
 
   render() {
 
@@ -68,6 +71,10 @@ export default class GameOfLife extends Component {
 
     return (
       <div className="universe">
+        <GameModal
+          showModal={ this.state.modal }
+          callback={ this.handleModal.bind(this) }
+          animation={ true }/>
         <Grid
           classname={ 'life-board' }
           bound={ this.state.totalBound }
@@ -84,13 +91,13 @@ export default class GameOfLife extends Component {
         </div>
       </div>
     );
-  };
+  }
 
   createGrid() {
     return Array.from(new Array(this.state.totalBound), () => {
       return `${ this.state.boardWidth / this.state.totalBound }px`
     }).join(' ');
-  };
+  }
 
   reduceWorldSize(e) {
     return this.setState((prevState) => {
@@ -102,7 +109,7 @@ export default class GameOfLife extends Component {
                cells: newCells
              };
     });
-  };
+  }
 
   growWorldSize(e) {
     this.setState((prevState) => {
@@ -115,7 +122,7 @@ export default class GameOfLife extends Component {
               cells: [...prevState.cells, ...createCellArray(totalNewCells)]
              }
     });
-  };
+  }
 
   handleCellClick(cell) {
     return this.state.cells[cell] === undefined
@@ -134,7 +141,7 @@ export default class GameOfLife extends Component {
       const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 1000)
       return { gameState, interval };
     });
-  };
+  }
 
   updateGameBoard() {
     return this.setState((prevState) => {
@@ -148,7 +155,7 @@ export default class GameOfLife extends Component {
         hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
         cells = [...prevState.cells];
         if (Object.keys(Store.changes).length === 0) {
-          nextState = { gameState: false, interval: clearInterval(prevState.interval) }
+          nextState = { modal: true, gameState: false, interval: clearInterval(prevState.interval) }
         } else {
           Object.keys(Store.changes).forEach(key => {
             cells[key] = Store.changes[key];
@@ -159,6 +166,11 @@ export default class GameOfLife extends Component {
       }
       return nextState;
     });
-  };
+  }
 
+  handleModal() {
+    return this.setState((prevState) => {
+      return prevState.modal === true ? { modal: false } : { modal: true }
+    });
+  }
 };

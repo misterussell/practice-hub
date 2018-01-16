@@ -11,8 +11,9 @@ export default class GameButton extends Component {
     callback: PropTypes.func
   }
 
-  constructor(props){
-    super(props);
+  constructor(...args){
+    super(...args);
+
     this.handleClick = this.handleClick.bind(this);
   }
 
