@@ -32,7 +32,8 @@ export default class GameOfLife extends Component {
       cells: [],
       hashMap: {},
       gameState: false,
-      pendingChanges: {}
+      pendingChanges: {},
+      interval: null
     };
 
     this.createGrid = this.createGrid.bind(this);
@@ -49,9 +50,16 @@ export default class GameOfLife extends Component {
     let cells = createCellArray(this.state.totalBound * this.state.totalBound);
 
     this.setState((prevState) => {
+      const interval = prevState.interval === null ? true : null;
       return { cells }
     });
   };
+
+  componentDidUpdate() {
+    if (this.state.gameState === true && this.state.interval === null) {
+      setInterval(this.updateGameBoard.bind(this), 1500);
+    }
+  }
 
   render() {
 
@@ -135,17 +143,26 @@ export default class GameOfLife extends Component {
   updateGameState(e) {
     this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
+      return { gameState };
+    });
+  };
+
+  updateGameBoard() {
+    return this.setState((prevState) => {
       let hashMap;
       let changes;
-      if (prevState.gameState === true) {
-        console.log('stopping game');
+      let cells;
+      if (prevState.gameState === false) {
+        cells = [...prevState.cells];
       } else {
         console.log('starting game');
         hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
-        changes = Store.changes;
-        console.log(hashMap);
+        cells = [...prevState.cells];
+        Object.keys(Store.changes).forEach(key => {
+          cells[key] = Store.changes[key];
+        });
       }
-      return { gameState, hashMap, pendingChanges: changes };
+      return { cells, hashMap };
     });
   };
 
