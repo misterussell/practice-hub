@@ -108,6 +108,8 @@ describe('Game Of Life component:', () => {
     const game = shallow(<GameOfLife />);
     game.instance().updateGameState();
     expect(game.state('gameState')).to.be.true;
+    game.instance().updateGameState();
+    expect(game.state('gameState')).to.be.false;
   });
 
 });

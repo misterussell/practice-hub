@@ -10,7 +10,7 @@ export default class Cell extends Component {
     classname: PropTypes.string,
     text: PropTypes.string,
     cellNumber: PropTypes.number
-  }
+  };
 
   constructor() {
     super();
@@ -18,16 +18,16 @@ export default class Cell extends Component {
       cellStyle: {}
     };
     this.handleClick = this.handleClick.bind(this);
-  }
+  };
 
   componentDidMount() {
     this.setState((prevState, props) => {
       const colour = props.cellState === 0 ? 'aliceblue' : '#5E59E1';
       return {
         cellStyle: { ...props.cellStyle, background: colour }
-      }
+      };
     });
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.cellState !== this.props.cellState) {
@@ -35,10 +35,11 @@ export default class Cell extends Component {
         const colour = props.cellState === 0 ? 'aliceblue' : '#5E59E1';
         return {
           cellStyle: { ...props.cellStyle, background: colour }
-        }
+        };
       });
-    }
-  }
+    };
+  };
+
   render() {
     return (
       <div
@@ -51,11 +52,11 @@ export default class Cell extends Component {
         </div>
       </div>
     );
-  }
+  };
 
   handleClick(e) {
     e.preventDefault()
-    this.props.callback !== null ? this.props.callback(this.props.cellNumber) : null;
-  }
+    return this.props.callback !== null ? this.props.callback(this.props.cellNumber) : null;
+  };
 
-}
+};

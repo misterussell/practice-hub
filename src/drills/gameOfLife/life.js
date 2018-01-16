@@ -1,3 +1,5 @@
+import Store from '../../Store';
+
 const _pipe = (a, b) => (...args) => b(a(...args));
 const pipe = (...fns) => fns.reduce(_pipe);
 
@@ -88,9 +90,9 @@ function getNextCellState(cell, genState) {
   const sum4 = blockSum === 4 ? true : false
   const nextState = sum3 ? 1 : sum4 ? cell.cellState : 0;
 
-  // if (cell.cellState !== nextState) {
-  //   store.changes[cell.arrayPosition] = nextState;
-  // }
+  if (cell.cellState !== nextState) {
+    Store.changes[cell.arrayPosition] = nextState;
+  }
 
   return { ...cell, nextState };
 }

@@ -7,6 +7,8 @@ import Cell from '../../components/Cell';
 
 // import '../../css/gameOfLife/gameOfLife.css'
 
+import Store from '../../Store';
+
 import {
   getNextGeneration,
   generateGenState,
@@ -29,7 +31,8 @@ export default class GameOfLife extends Component {
       boardWidth: 500,
       cells: [],
       hashMap: {},
-      gameState: false
+      gameState: false,
+      pendingChanges: {}
     };
 
     this.createGrid = this.createGrid.bind(this);
@@ -39,15 +42,14 @@ export default class GameOfLife extends Component {
     this.setState((prevState) => {
       return { totalBound: prevState.userBound + prevState.minBound }
     });
+
   };
 
   componentDidMount() {
     let cells = createCellArray(this.state.totalBound * this.state.totalBound);
-    let hashableArray = createHashableArray(cells, this.state.totalBound);
-    let hashMap = generateGenState(hashableArray);
 
     this.setState((prevState) => {
-      return { cells, hashMap }
+      return { cells }
     });
   };
 
@@ -95,14 +97,14 @@ export default class GameOfLife extends Component {
   };
 
   reduceWorldSize(e) {
-    this.setState((prevState) => {
+    return this.setState((prevState) => {
       const minBoundCheck = prevState.userBound === 0 ? 0 : prevState.userBound -= 2;
       const newTotalBound = prevState.userBound + prevState.minBound;
       const newCells = prevState.cells.slice(0, (newTotalBound * newTotalBound));
       return { userBound: minBoundCheck,
                totalBound: newTotalBound,
                cells: newCells
-             }
+             };
     });
   };
 
@@ -131,12 +133,20 @@ export default class GameOfLife extends Component {
   };
 
   updateGameState(e) {
-    // this.setState((prevState) => {
-    //   return { gameState: true }
-    // });
-    return this.setState((prevState) => {
+    this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
-      return { gameState }
+      let hashMap;
+      let changes;
+      if (prevState.gameState === true) {
+        console.log('stopping game');
+      } else {
+        console.log('starting game');
+        hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
+        changes = Store.changes;
+        console.log(hashMap);
+      }
+      return { gameState, hashMap, pendingChanges: changes };
     });
-  }
+  };
+
 };
