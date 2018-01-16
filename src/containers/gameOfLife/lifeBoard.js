@@ -55,12 +55,6 @@ export default class GameOfLife extends Component {
     });
   };
 
-  componentDidUpdate() {
-    if (this.state.gameState === true && this.state.interval === null) {
-      setInterval(this.updateGameBoard.bind(this), 1500);
-    }
-  }
-
   render() {
 
     const cellStyle = {
@@ -143,7 +137,8 @@ export default class GameOfLife extends Component {
   updateGameState(e) {
     this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
-      return { gameState };
+      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 1500)
+      return { gameState, interval };
     });
   };
 
@@ -155,7 +150,6 @@ export default class GameOfLife extends Component {
       if (prevState.gameState === false) {
         cells = [...prevState.cells];
       } else {
-        console.log('starting game');
         hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
         cells = [...prevState.cells];
         Object.keys(Store.changes).forEach(key => {
