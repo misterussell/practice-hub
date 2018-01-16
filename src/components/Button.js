@@ -8,7 +8,7 @@ export default class GameButton extends Component {
   static propTypes = {
     classname: PropTypes.string,
     text: PropTypes.string,
-    handleClick: PropTypes.func
+    callback: PropTypes.func
   }
 
   constructor(props){

@@ -1,6 +1,9 @@
 const _pipe = (a, b) => (...args) => b(a(...args));
 const pipe = (...fns) => fns.reduce(_pipe);
 
+// let store = {};
+// store.changes = {};
+
 function getNextGeneration(cells, generations) {
   const initiateSeed = pipe(generateGenState, generateNextGenState, setNextGenState);
   const progressLife = pipe(generateNextGenState, setNextGenState)
@@ -20,14 +23,16 @@ function getNextGeneration(cells, generations) {
 
 function generateGenState(rawCells) {
   let genState = {};
-    rawCells.forEach((terrian, i, arr) => {
-      terrian.forEach((cell, p, arr2) => {
-        const toroidalLimits = [arr.length, arr2.length]
-        const cellState = cell;
-        const cellObj = createCell(i + 1, p + 1, cellState, toroidalLimits);
-        return genState[cellObj.cellHash] = cellObj
-      });
-   });
+  let arrayPosition = 0;
+  rawCells.forEach((terrian, i, arr) => {
+    terrian.forEach((cell, p, arr2) => {
+      const toroidalLimits = [arr.length, arr2.length];
+      const cellState = cell;
+      const cellObj = createCell(i + 1, p + 1, cellState, toroidalLimits, arrayPosition);
+      arrayPosition += 1;
+      return genState[cellObj.cellHash] = cellObj;
+    });
+  });
   return genState;
 }
 
@@ -50,7 +55,7 @@ function setNextGenState(gen) {
   return newGen;
 }
 
-function createCell(x, y, cellState, toroidalLimits) {
+function createCell(x, y, cellState, toroidalLimits, arrayPosition) {
   // factory settings
   const cellHash = (x * 15486047) + (y * 15487429);
   // factory
@@ -59,7 +64,8 @@ function createCell(x, y, cellState, toroidalLimits) {
     y,
     cellHash,
     cellState,
-    toroidalLimits
+    toroidalLimits,
+    arrayPosition
   });
   return Cell();
 }
@@ -74,13 +80,17 @@ function getNextCellState(cell, genState) {
       [highLimit, leftLimit], [highLimit, cell.y], [highLimit, rightLimit],
       [cell.x, leftLimit], [cell.x, cell.y], [cell.x, rightLimit],
       [lowLimit, leftLimit], [lowLimit, cell.y], [lowLimit, rightLimit]
-      ].map(neighbor => {
-        return genState[(neighbor[0] * 15486047) + (neighbor[1] * 15487429)].cellState;
+    ].map(xyPosition => {
+        return genState[(xyPosition[0] * 15486047) + (xyPosition[1] * 15487429)].cellState;
       }).reduce((a, b) => a + b);
 
   const sum3 = blockSum === 3 ? true : false;
   const sum4 = blockSum === 4 ? true : false
   const nextState = sum3 ? 1 : sum4 ? cell.cellState : 0;
+
+  // if (cell.cellState !== nextState) {
+  //   store.changes[cell.arrayPosition] = nextState;
+  // }
 
   return { ...cell, nextState };
 }
@@ -111,5 +121,40 @@ function createHashableArray(cells, totalBound) {
 
   return hashableArray;
 }
+
+// let testArray = Array.from(new Array(25), t => {
+  // return 0;
+// });
+
+// testArray[4] = 1;
+// testArray[10] = 1;
+// console.log(testArray);
+
+// let testObj = generateGenState(createHashableArray(testArray, 5));
+
+// console.log(testObj);
+
+// let objKeys = Object.keys(testObj)
+
+// let updatedObj = generateNextGenState(testObj);
+
+// console.log(updatedObj);
+
+// hard overwriting each store.changes each time updates are made
+// console.log(store);
+
+// updatedObj = generateNextGenState(updatedObj);
+
+// console.log(testArray);
+
+// Object.keys(store.changes).forEach(key => {
+//   testArray[key] = store.changes[key];
+// });
+
+// console.log(store);
+// console.log(testArray);
+
+// updatedObj = generateNextGenState(updatedObj);
+// console.log(store);
 
 export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray, pipe };

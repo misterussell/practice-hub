@@ -9,7 +9,6 @@ export default class Cell extends Component {
     cellStyle: PropTypes.object,
     classname: PropTypes.string,
     text: PropTypes.string,
-    handleClick: PropTypes.func,
     cellNumber: PropTypes.number
   }
 
@@ -56,7 +55,7 @@ export default class Cell extends Component {
 
   handleClick(e) {
     e.preventDefault()
-    this.props.callback(this.props.cellNumber);
+    this.props.callback !== null ? this.props.callback(this.props.cellNumber) : null;
   }
 
 }

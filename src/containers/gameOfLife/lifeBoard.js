@@ -62,7 +62,7 @@ export default class GameOfLife extends Component {
           style={ cellStyle }
           classname={ 'cell' }
           text={ 'text' }
-          callback={ this.handleCellClick.bind(this) }
+          callback={ this.state.gameState === false ? this.handleCellClick.bind(this) : null }
           cellNumber={ i }
           cellState={ cell }
         />
@@ -79,9 +79,9 @@ export default class GameOfLife extends Component {
         </Grid>
         <div className="world-meter">
           <ButtonGroup bsStyle="large">
-            <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button' } text={ 'Shrink' }/>
-            <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
-            <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button' } text={ 'Grow' } />
+            <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button shrink' } text={ 'Shrink' }/>
+            <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button start-stop' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
+            <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button grow' } text={ 'Grow' } />
           </ButtonGroup>
         </div>
       </div>
@@ -130,12 +130,13 @@ export default class GameOfLife extends Component {
         });
   };
 
-  updateGameState() {
+  updateGameState(e) {
     // this.setState((prevState) => {
     //   return { gameState: true }
     // });
-    return this.state.GameState === true
-      ? console.log('pause the game')
-      : console.log('start the game')
+    return this.setState((prevState) => {
+      const gameState = prevState.gameState === true ? false : true;
+      return { gameState }
+    });
   }
 };

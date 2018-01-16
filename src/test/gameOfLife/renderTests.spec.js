@@ -95,13 +95,19 @@ describe('Game Of Life component:', () => {
     expect(game.state('cells').length).to.equal(49);
   });
 
-  it('the reduceWorldSize() method should remove cells from the state.cells array, but down to the original minBound x minBound array size', ()=> {
+  it('the reduceWorldSize() method should remove cells from the state.cells array, but down to the original minBound x minBound array size', () => {
     const game = shallow(<GameOfLife />);
     game.instance().growWorldSize();
     game.instance().reduceWorldSize();
     expect(game.state('userBound')).to.equal(0);
     game.instance().reduceWorldSize();
     expect(game.state('userBound')).to.equal(0);
+  });
+
+  it('the updateGameState() method should update the start/stop button and remove functionality from cell clicks,', () => {
+    const game = shallow(<GameOfLife />);
+    game.instance().updateGameState();
+    expect(game.state('gameState')).to.be.true;
   });
 
 });
