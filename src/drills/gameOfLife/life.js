@@ -124,39 +124,4 @@ function createHashableArray(cells, totalBound) {
   return hashableArray;
 }
 
-// let testArray = Array.from(new Array(25), t => {
-  // return 0;
-// });
-
-// testArray[4] = 1;
-// testArray[10] = 1;
-// console.log(testArray);
-
-// let testObj = generateGenState(createHashableArray(testArray, 5));
-
-// console.log(testObj);
-
-// let objKeys = Object.keys(testObj)
-
-// let updatedObj = generateNextGenState(testObj);
-
-// console.log(updatedObj);
-
-// hard overwriting each store.changes each time updates are made
-// console.log(store);
-
-// updatedObj = generateNextGenState(updatedObj);
-
-// console.log(testArray);
-
-// Object.keys(store.changes).forEach(key => {
-//   testArray[key] = store.changes[key];
-// });
-
-// console.log(store);
-// console.log(testArray);
-
-// updatedObj = generateNextGenState(updatedObj);
-// console.log(store);
-
 export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray, pipe };

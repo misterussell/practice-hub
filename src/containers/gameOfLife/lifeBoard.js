@@ -10,15 +10,10 @@ import Cell from '../../components/Cell';
 import Store from '../../Store';
 
 import {
-  getNextGeneration,
   generateGenState,
   generateNextGenState,
-  createCell,
-  getNextCellState,
-  changeCellState,
   createCellArray,
   createHashableArray,
-  pipe
 } from '../../drills/gameOfLife/life';
 
 export default class GameOfLife extends Component {
@@ -50,7 +45,6 @@ export default class GameOfLife extends Component {
     let cells = createCellArray(this.state.totalBound * this.state.totalBound);
 
     this.setState((prevState) => {
-      const interval = prevState.interval === null ? true : null;
       return { cells }
     });
   };
@@ -137,7 +131,7 @@ export default class GameOfLife extends Component {
   updateGameState(e) {
     this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
-      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 1500)
+      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 1000)
       return { gameState, interval };
     });
   };
@@ -145,18 +139,25 @@ export default class GameOfLife extends Component {
   updateGameBoard() {
     return this.setState((prevState) => {
       let hashMap;
-      let changes;
       let cells;
+      let nextState;
       if (prevState.gameState === false) {
         cells = [...prevState.cells];
+        nextState = { cells };
       } else {
         hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
         cells = [...prevState.cells];
-        Object.keys(Store.changes).forEach(key => {
-          cells[key] = Store.changes[key];
-        });
+        if (Object.keys(Store.changes).length === 0) {
+          nextState = { gameState: false, interval: clearInterval(prevState.interval) }
+        } else {
+          Object.keys(Store.changes).forEach(key => {
+            cells[key] = Store.changes[key];
+          });
+          Store.changes = {};
+          nextState = { hashMap, cells };
+        }
       }
-      return { cells, hashMap };
+      return nextState;
     });
   };
 
