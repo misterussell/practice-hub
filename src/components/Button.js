@@ -8,7 +8,7 @@ export default class GameButton extends Component {
   static propTypes = {
     classname: PropTypes.string,
     text: PropTypes.string,
-    callback: PropTypes.func
+    callback: PropTypes.func,
   }
 
   constructor(...args){
@@ -22,6 +22,7 @@ export default class GameButton extends Component {
       <Button
         onClick={ this.handleClick }
         bsStyle="primary"
+        disabled={ this.props.disabled }
       >
         { this.props.text }
       </Button>

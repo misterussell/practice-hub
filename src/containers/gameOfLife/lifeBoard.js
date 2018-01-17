@@ -29,6 +29,7 @@ export default class GameOfLife extends Component {
       totalBound: 0,
       boardWidth: 500,
       cells: [],
+      activeCells: 0,
       hashMap: {},
       gameState: false,
       pendingChanges: {},
@@ -94,6 +95,7 @@ export default class GameOfLife extends Component {
           <ButtonGroup bsStyle="large">
             <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button shrink' } text={ 'Shrink' }/>
             <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button start-stop' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
+            <Button callback={ this.clearGameBoard.bind(this) } classname={ 'game-button clear'} text={ 'Clear' } />
             <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button grow' } text={ 'Grow' } />
           </ButtonGroup>
         </div>
@@ -137,16 +139,17 @@ export default class GameOfLife extends Component {
       ? console.log('does not exist')
       : this.setState((prevState) => {
           const cellState = prevState.cells[cell] === 0 ? 1 : 0;
+          const activeCells = prevState.cells[cell] === 0 ? prevState.activeCells += 1 : prevState.activeCells -=1;
           const copy = [...prevState.cells]
           copy[cell] = cellState;
-          return { cells: copy }
+          return { cells: copy, activeCells }
         });
   };
 
   updateGameState(e) {
     this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
-      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 175)
+      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 175);
       return { gameState, interval };
     });
   }
@@ -174,6 +177,16 @@ export default class GameOfLife extends Component {
       }
       return nextState;
     });
+  }
+
+  clearGameBoard() {
+    let cells = createCellArray(this.state.totalBound * this.state.totalBound);
+
+    return this.state.activeCells === 0
+      ? null
+      : this.setState((prevState) => {
+          return { cells, activeCells: 0 }
+        });
   }
 
   handleModal() {
