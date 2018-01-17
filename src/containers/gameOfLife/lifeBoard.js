@@ -166,7 +166,14 @@ export default class GameOfLife extends Component {
         hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
         cells = [...prevState.cells];
         if (Object.keys(Store.changes).length === 0) {
-          nextState = { modal: { ...prevState.modal, show: true }, gameState: false, interval: clearInterval(prevState.interval) }
+          // add active cell tracking for modal message
+          const modal = {
+            show: true,
+            title: 'Game Over',
+            header: 'Your civilization has died.',
+            text: 'Text'
+          };
+          nextState = { gameState: false, interval: clearInterval(prevState.interval), modal }
         } else {
           Object.keys(Store.changes).forEach(key => {
             cells[key] = Store.changes[key];
@@ -184,14 +191,25 @@ export default class GameOfLife extends Component {
 
     return this.state.activeCells === 0
       ? null
-      : this.setState((prevState) => {
+      : this.state.gameState === true
+        ? null
+        : this.setState((prevState) => {
           return { cells, activeCells: 0 }
         });
   }
 
   handleModal() {
     return this.setState((prevState) => {
-      return prevState.modal === true ? { modal: false } : { modal: true }
+      let modal;
+      let show;
+      if (prevState.modal.show === true) {
+        show = false;
+        modal = { ...prevState.modal, show };
+      } else {
+        show = true;
+        modal = { ...prevState.modal, show };
+      }
+      return { modal }
     });
   }
 };

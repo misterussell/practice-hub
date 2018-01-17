@@ -46,9 +46,9 @@ describe('Game Of Life component:', () => {
     expect(game.state('userBound')).to.equal(0);
   });
 
-  it('should render only 3 Buttons', () => {
+  it('should render 4 Buttons', () => {
     const game = shallow(<GameOfLife />);
-    expect(game.find(Button)).to.have.length(3);
+    expect(game.find(Button)).to.have.length(4);
   });
 
   it('should render 25 Cells by default', () => {
@@ -111,5 +111,20 @@ describe('Game Of Life component:', () => {
     game.instance().updateGameState();
     expect(game.state('gameState')).to.be.false;
   });
+
+  it('the clearGameBoard() method should remove any active cells', () => {
+    const game = shallow(<GameOfLife />);
+    game.instance().handleCellClick(0);
+    expect(game.state('activeCells')).to.equal(1);
+    game.instance().clearGameBoard();
+    expect(game.state('activeCells')).to.equal(0);
+  });
+
+  // it('the handleModal() method should hide an active modal', () => {
+  //   const game = shallow(<GameOfLife />);
+  //   game.instance().handleCellClick(0);
+  //   game.instance().updateGameState();
+  //   game.instance().updateGameBoard();
+  // });
 
 });
