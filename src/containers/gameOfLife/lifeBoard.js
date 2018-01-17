@@ -33,7 +33,12 @@ export default class GameOfLife extends Component {
       gameState: false,
       pendingChanges: {},
       interval: null,
-      modal: false
+      modal: {
+        show: false,
+        title: 'title',
+        header: 'header',
+        text: 'text'
+      }
     };
   }
 
@@ -72,8 +77,11 @@ export default class GameOfLife extends Component {
     return (
       <div className="universe">
         <GameModal
-          showModal={ this.state.modal }
+          showModal={ this.state.modal.show }
           callback={ this.handleModal.bind(this) }
+          title={ this.state.modal.title }
+          header={ this.state.modal.header }
+          text={ this.state.modal.text }
           animation={ true }/>
         <Grid
           classname={ 'life-board' }
@@ -113,7 +121,7 @@ export default class GameOfLife extends Component {
 
   growWorldSize(e) {
     this.setState((prevState) => {
-      const maxBoundCheck = prevState.userBound === 10 ? 10 : prevState.userBound += 2;
+      const maxBoundCheck = prevState.userBound === 12 ? 12 : prevState.userBound += 2;
       const newTotalBound = maxBoundCheck + prevState.minBound;
       const totalNewCells = ((newTotalBound * newTotalBound) - (prevState.totalBound * prevState.totalBound));
       return {
@@ -138,7 +146,7 @@ export default class GameOfLife extends Component {
   updateGameState(e) {
     this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
-      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 1000)
+      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 175)
       return { gameState, interval };
     });
   }
@@ -155,7 +163,7 @@ export default class GameOfLife extends Component {
         hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
         cells = [...prevState.cells];
         if (Object.keys(Store.changes).length === 0) {
-          nextState = { modal: true, gameState: false, interval: clearInterval(prevState.interval) }
+          nextState = { modal: { ...prevState.modal, show: true }, gameState: false, interval: clearInterval(prevState.interval) }
         } else {
           Object.keys(Store.changes).forEach(key => {
             cells[key] = Store.changes[key];

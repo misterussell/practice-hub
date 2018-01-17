@@ -6,7 +6,10 @@ export default class GameModal extends Component {
   static propTypes = {
     showModal: PropTypes.bool,
     keyboard: PropTypes.bool,
-    animation: PropTypes.bool
+    animation: PropTypes.bool,
+    title: PropTypes.string,
+    header: PropTypes.string,
+    text: PropTypes.string
   }
 
 	constructor(...args) {
@@ -28,11 +31,11 @@ export default class GameModal extends Component {
 		return (
 				<Modal show={this.state.showModal} onHide={ this.props.callback }>
 					<Modal.Header closeButton>
-						<Modal.Title>Modal heading</Modal.Title>
+						<Modal.Title>{ this.props.title }</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						<h4>Text in a modal</h4>
-            Test text bla bla
+						<h4>{ this.props.header }</h4>
+            { this.props.text }
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={ this.props.callback }>Close</Button>
