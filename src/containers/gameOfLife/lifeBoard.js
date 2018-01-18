@@ -32,7 +32,6 @@ export default class GameOfLife extends Component {
       activeCells: 0,
       hashMap: {},
       gameState: false,
-      pendingChanges: {},
       interval: null,
       modal: {
         show: false,
