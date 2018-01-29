@@ -159,14 +159,21 @@ export default class GameOfLife extends Component {
       let hashMap;
       let cells;
       let nextState;
+
       if (prevState.gameState === false) {
-        cells = [...prevState.cells];
-        nextState = { cells };
+        nextState = { cells: [...prevState.cells] };
       } else {
-        hashMap = generateNextGenState(generateGenState(createHashableArray(prevState.cells, prevState.totalBound)));
+        // generate the new life state
+        hashMap = generateNextGenState(
+                    generateGenState(
+                      createHashableArray(prevState.cells, prevState.totalBound)));
+
+        // create mutable copy of current state.cells array
         cells = [...prevState.cells];
+
+        // check changes to life state from the new life state above
         if (Object.keys(Store.changes).length === 0) {
-          // add active cell tracking for modal message
+          // add active cell tracking for modal messageg
           const modal = {
             show: true,
             title: 'Game Over',
