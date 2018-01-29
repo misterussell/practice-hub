@@ -32,7 +32,6 @@ export default class GameOfLife extends Component {
       activeCells: 0,
       hashMap: {},
       gameState: false,
-      pendingChanges: {},
       interval: null,
       modal: {
         show: false,
@@ -47,7 +46,6 @@ export default class GameOfLife extends Component {
     this.setState((prevState) => {
       return { totalBound: prevState.userBound + prevState.minBound }
     });
-
   }
 
   componentDidMount() {
@@ -122,7 +120,7 @@ export default class GameOfLife extends Component {
   }
 
   growWorldSize(e) {
-    this.setState((prevState) => {
+    return this.setState((prevState) => {
       const maxBoundCheck = prevState.userBound === 12 ? 12 : prevState.userBound += 2;
       const newTotalBound = maxBoundCheck + prevState.minBound;
       const totalNewCells = ((newTotalBound * newTotalBound) - (prevState.totalBound * prevState.totalBound));
@@ -144,10 +142,10 @@ export default class GameOfLife extends Component {
           copy[cell] = cellState;
           return { cells: copy, activeCells }
         });
-  };
+  }
 
   updateGameState(e) {
-    this.setState((prevState) => {
+    return this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
       const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 175);
       return { gameState, interval };
