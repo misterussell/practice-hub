@@ -18,15 +18,15 @@ export default class Cell extends Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      cellStyle: {}
+      classname: 'cell'
     };
   };
 
   componentDidMount() {
     this.setState((prevState, props) => {
-      const colour = props.cellState === 0 ? 'aliceblue' : '#5E59E1';
+      const classname = props.cellState === 0 ? 'cell' : 'cell active';
       return {
-        cellStyle: { ...props.cellStyle, background: colour }
+        classname
       };
     });
   };
@@ -34,9 +34,9 @@ export default class Cell extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.cellState !== this.props.cellState) {
       this.setState((prevState, props) => {
-        const colour = props.cellState === 0 ? 'aliceblue' : '#5E59E1';
+        const classname = props.cellState === 0 ? 'cell' : 'cell active';
         return {
-          cellStyle: { ...props.cellStyle, background: colour }
+          classname
         };
       });
     };
@@ -46,18 +46,18 @@ export default class Cell extends Component {
     return (
       <div
         style={ this.state.cellStyle }
-        className={ this.props.classname }
+        className={ this.state.classname }
         onClick={ this.handleClick }
       >
         <div className="hide">
-        { this.props.text }
+          { this.props.text }
         </div>
       </div>
     );
   };
 
   handleClick(e) {
-    e.preventDefault()
+    e.preventDefault();
     return this.props.callback !== null ? this.props.callback(this.props.cellNumber) : null;
   };
 

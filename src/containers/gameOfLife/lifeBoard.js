@@ -138,8 +138,11 @@ export default class GameOfLife extends Component {
       : this.setState((prevState) => {
           const cellState = prevState.cells[cell] === 0 ? 1 : 0;
           const activeCells = prevState.cells[cell] === 0 ? prevState.activeCells += 1 : prevState.activeCells -=1;
-          const copy = [...prevState.cells]
+          const copy = [...prevState.cells];
           copy[cell] = cellState;
+          // const hashMap = generateNextGenState(
+                            // generateGenState(
+                              // createHashableArray(prevState.cells, prevState.totalBound)));
           return { cells: copy, activeCells }
         });
   }
@@ -147,7 +150,7 @@ export default class GameOfLife extends Component {
   updateGameState(e) {
     return this.setState((prevState) => {
       const gameState = prevState.gameState === true ? false : true;
-      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 175);
+      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 300);
       return { gameState, interval };
     });
   }
