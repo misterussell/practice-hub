@@ -15,6 +15,7 @@ import {
   generateNextGenState,
   createCellArray,
   createHashableArray,
+  getChangedCells
 } from '../../drills/gameOfLife/life';
 
 export default class GameOfLife extends Component {
@@ -168,6 +169,8 @@ export default class GameOfLife extends Component {
         hashMap = generateNextGenState(
                     generateGenState(
                       createHashableArray(prevState.cells, prevState.totalBound)));
+
+        Store.changes = getChangedCells(hashMap);
 
         // create mutable copy of current state.cells array
         cells = [...prevState.cells];

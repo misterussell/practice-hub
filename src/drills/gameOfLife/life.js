@@ -90,10 +90,6 @@ function getNextCellState(cell, genState) {
   const sum4 = blockSum === 4 ? true : false
   const nextState = sum3 ? 1 : sum4 ? cell.cellState : 0;
 
-  if (cell.cellState !== nextState) {
-    Store.changes[cell.arrayPosition] = nextState;
-  }
-
   return { ...cell, nextState };
 }
 
@@ -124,4 +120,16 @@ function createHashableArray(cells, totalBound) {
   return hashableArray;
 }
 
-export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray, pipe };
+function getChangedCells(cells){
+  let changes = {};
+
+  for (var cell in cells) {
+    if (cells[cell].cellState !== cells[cell].nextState) {
+      changes[cells[cell].arrayPosition] = cells[cell].nextState;
+    }
+  }
+
+  return changes;
+}
+
+export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray, getChangedCells, pipe };
