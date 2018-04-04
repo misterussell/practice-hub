@@ -137,14 +137,14 @@ export default class GameOfLife extends Component {
     return this.state.cells[cell] === undefined
       ? console.log('does not exist')
       : this.setState((prevState) => {
+          let cells = [...prevState.cells];
           const cellState = prevState.cells[cell] === 0 ? 1 : 0;
           const activeCells = prevState.cells[cell] === 0 ? prevState.activeCells += 1 : prevState.activeCells -=1;
-          const copy = [...prevState.cells];
-          copy[cell] = cellState;
-          // const hashMap = generateNextGenState(
-                            // generateGenState(
-                              // createHashableArray(prevState.cells, prevState.totalBound)));
-          return { cells: copy, activeCells }
+          cells[cell] = cellState;
+          const hashMap = generateNextGenState(
+                            generateGenState(
+                              createHashableArray(cells, prevState.totalBound)));
+          return { cells, activeCells, hashMap }
         });
   }
 
