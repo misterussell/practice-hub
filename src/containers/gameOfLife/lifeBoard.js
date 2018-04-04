@@ -15,8 +15,13 @@ import {
   generateNextGenState,
   createCellArray,
   createHashableArray,
-  getChangedCells
+  getChangedCells,
+  generateHashMap
 } from '../../drills/gameOfLife/life';
+
+import {
+  getModal
+} from '../../drills/gameOfLife/lifeTracking';
 
 export default class GameOfLife extends Component {
   constructor(...args) {
@@ -166,9 +171,7 @@ export default class GameOfLife extends Component {
         nextState = { cells: [...prevState.cells] };
       } else {
         // generate the new life state
-        hashMap = generateNextGenState(
-                    generateGenState(
-                      createHashableArray(prevState.cells, prevState.totalBound)));
+        hashMap = generateHashMap(prevState.cells, prevState.totalBound);
 
         Store.changes = getChangedCells(hashMap);
 
@@ -178,12 +181,8 @@ export default class GameOfLife extends Component {
         // check changes to life state from the new life state above
         if (Object.keys(Store.changes).length === 0) {
           // add active cell tracking for modal messageg
-          const modal = {
-            show: true,
-            title: 'Game Over',
-            header: 'Your civilization has died.',
-            text: 'Text'
-          };
+          const modal = getModal();
+          modal.show = true;
           nextState = { gameState: false, interval: clearInterval(prevState.interval), modal }
         } else {
           Object.keys(Store.changes).forEach(key => {

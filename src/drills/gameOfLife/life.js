@@ -120,6 +120,15 @@ function createHashableArray(cells, totalBound) {
   return hashableArray;
 }
 
+// this needs piped
+function generateHashMap(cells, totalBound){
+  return generateNextGenState(
+          generateGenState(
+              createHashableArray(cells, totalBound)
+          )
+         );
+}
+
 function getChangedCells(cells){
   let changes = {};
 
@@ -132,4 +141,6 @@ function getChangedCells(cells){
   return changes;
 }
 
-export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray, getChangedCells, pipe };
+
+
+export { getNextGeneration, generateGenState, generateNextGenState, createCell, getNextCellState, changeCellState, createCellArray, createHashableArray, getChangedCells, generateHashMap, pipe };
