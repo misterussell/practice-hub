@@ -11,15 +11,6 @@ import GameModal from '../../components/GameModal';
 import Store from '../../Store';
 
 import {
-  generateGenState,
-  generateNextGenState,
-  createCellArray,
-  createHashableArray,
-  getChangedCells,
-  generateHashMap
-} from '../../drills/gameOfLife/life';
-
-import {
   getModal
 } from '../../drills/gameOfLife/lifeTracking';
 
@@ -55,7 +46,7 @@ export default class GameOfLife extends Component {
   }
 
   componentDidMount() {
-    let cells = createCellArray(this.state.totalBound * this.state.totalBound);
+    let cells = Store.cells.createCellArray(this.state.totalBound * this.state.totalBound);
 
     this.setState((prevState) => {
       return { cells }
@@ -133,7 +124,7 @@ export default class GameOfLife extends Component {
       return {
               userBound: maxBoundCheck,
               totalBound: newTotalBound,
-              cells: [...prevState.cells, ...createCellArray(totalNewCells)]
+              cells: [...prevState.cells, ...Store.cells.createCellArray(totalNewCells)]
              }
     });
   }
@@ -146,10 +137,7 @@ export default class GameOfLife extends Component {
           const cellState = prevState.cells[cell] === 0 ? 1 : 0;
           const activeCells = prevState.cells[cell] === 0 ? prevState.activeCells += 1 : prevState.activeCells -=1;
           cells[cell] = cellState;
-          const hashMap = generateNextGenState(
-                            generateGenState(
-                              createHashableArray(cells, prevState.totalBound)));
-          return { cells, activeCells, hashMap }
+          return { cells, activeCells }
         });
   }
 
@@ -163,18 +151,15 @@ export default class GameOfLife extends Component {
 
   updateGameBoard() {
     return this.setState((prevState) => {
-      let hashMap;
       let cells;
       let nextState;
+
+      Store.cells.getHashMap(prevState.cells, prevState.totalBound);
 
       if (prevState.gameState === false) {
         nextState = { cells: [...prevState.cells] };
       } else {
-        // generate the new life state
-        hashMap = generateHashMap(prevState.cells, prevState.totalBound);
-
-        Store.changes = getChangedCells(hashMap);
-
+        Store.changes = Store.cells.getChangedCells();
         // create mutable copy of current state.cells array
         cells = [...prevState.cells];
 
@@ -183,13 +168,15 @@ export default class GameOfLife extends Component {
           // add active cell tracking for modal messageg
           const modal = getModal();
           modal.show = true;
-          nextState = { gameState: false, interval: clearInterval(prevState.interval), modal }
+          nextState = { gameState: false,
+                        interval: clearInterval(prevState.interval),
+                        modal };
         } else {
           Object.keys(Store.changes).forEach(key => {
             cells[key] = Store.changes[key];
           });
           Store.changes = {};
-          nextState = { hashMap, cells };
+          nextState = { cells };
         }
       }
       return nextState;
@@ -197,7 +184,7 @@ export default class GameOfLife extends Component {
   }
 
   clearGameBoard() {
-    let cells = createCellArray(this.state.totalBound * this.state.totalBound);
+    let cells = Store.cells.createCellArray(this.state.totalBound * this.state.totalBound);
 
     return this.state.activeCells === 0
       ? null

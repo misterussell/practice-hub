@@ -1,5 +1,8 @@
+import Cells from './collections/Cells';
+
 let store = {
-  changes: {}
+  cells: Cells(),
+  changes: {},
 }
 
 export default store;
