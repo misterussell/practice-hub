@@ -4,7 +4,8 @@ export default function Tracking() {
   let stats = {
     generationStats: {
       lifeSums: [],
-      deathSums: []
+      deathSums: [],
+      lifeSpan: 0
     },
     cellStats: {}
   };
@@ -25,6 +26,7 @@ export default function Tracking() {
 
       stats.generationStats.lifeSums[i] === undefined ? stats.generationStats.lifeSums.push(0) : null;
       stats.generationStats.deathSums[i] === undefined ? stats.generationStats.deathSums.push(0) : null;
+      stats.generationStats.lifeSpan += 1;
 
       Object.keys(obj).forEach((key, p, keys) => {
 
@@ -90,8 +92,7 @@ export default function Tracking() {
   }
 
   function analyzeCells() {
-    console.log(stats.cellStats);
-    Object.keys(stats.cellStats).forEach((key, i, arr) => {
+    return Object.keys(stats.cellStats).forEach((key, i, arr) => {
       let sustainedPeriods = { life: getContinousLife(stats.cellStats[key].cellHistory), death: getContinousDeath(stats.cellStats[key].cellHistory) };
       stats.cellStats[key].sustainedPeriods =  sustainedPeriods;
       // shortest periods
@@ -163,12 +164,12 @@ export default function Tracking() {
     return variations;
   }
 
-  function getIndecesForHighestChanges(obj, count) {
+  function getIndecesForMaxVals(obj, count) {
     let changes = {};
 
     Array.from(Object.keys(obj)).sort((a, b) => {
       if (a < b) { return 1; }
-      else if (a == b) { return 0; }
+      else if (a === b) { return 0; }
       else { return -1; }
     }).filter((val, i) => {
       if (i < count) {
