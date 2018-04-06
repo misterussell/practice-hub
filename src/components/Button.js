@@ -20,7 +20,7 @@ export default class GameButton extends Component {
   render() {
     return (
       <Button
-        onClick={ this.handleClick }
+        onClick={ this.props.callback === null ? null : this.handleClick }
         bsStyle="primary"
         disabled={ this.props.disabled }
       >

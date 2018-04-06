@@ -4,6 +4,7 @@ import { ButtonGroup } from 'react-bootstrap'
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Cell from '../../components/Cell';
+import Hero from '../../components/Hero';
 
 // import '../../css/gameOfLife/gameOfLife.css'
 
@@ -21,8 +22,10 @@ export default class GameOfLife extends Component {
       totalBound: 0,
       boardWidth: 500,
       cells: [],
+      lifeSpan: 0,
       gameState: false,
       interval: null,
+      gameOver: false
     };
   }
 
@@ -45,6 +48,10 @@ export default class GameOfLife extends Component {
     const cellStyle = {
       height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`,
     };
+
+    const gameOverHero = this.state.gameOver === true
+      ? <Hero stats={ Store.tracking.compileStats() } />
+      : null;
 
     let cells = this.state.cells.map((cell, i) => {
       return <Cell key={ i }
@@ -74,6 +81,7 @@ export default class GameOfLife extends Component {
             <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button grow' } text={ 'Grow' } />
           </ButtonGroup>
         </div>
+        { gameOverHero }
       </div>
     );
   }
@@ -151,14 +159,18 @@ export default class GameOfLife extends Component {
         if (Object.keys(Store.changes).length === 0) {
           nextState = {
                         gameState: false,
-                        interval: clearInterval(prevState.interval)
+                        interval: clearInterval(prevState.interval),
+                        gameOver: true
                       };
         } else {
           Object.keys(Store.changes).forEach(key => {
             cells[key] = Store.changes[key];
           });
           Store.changes = {};
-          nextState = { cells };
+          nextState = {
+            cells,
+            lifeSpan: prevState.lifeSpan + 1
+          };
         }
       }
       return nextState;
