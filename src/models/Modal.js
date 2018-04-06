@@ -1,7 +1,5 @@
-// tracking functions
-
 // modal control
-function getModal(){
+export default function Modal(modalInfo){
   let title = `Game Over.`;
   let header = `Your Civilization has died.`;
   let text = `Your Civiliation survived for X generations.`
@@ -13,5 +11,3 @@ function getModal(){
 
   return modal;
 }
-
-export { getModal };

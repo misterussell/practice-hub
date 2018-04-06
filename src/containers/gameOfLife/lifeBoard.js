@@ -10,9 +10,7 @@ import GameModal from '../../components/GameModal';
 
 import Store from '../../Store';
 
-import {
-  getModal
-} from '../../drills/gameOfLife/lifeTracking';
+import getModal from '../../models/Modal';
 
 export default class GameOfLife extends Component {
   constructor(...args) {
@@ -137,6 +135,7 @@ export default class GameOfLife extends Component {
           const cellState = prevState.cells[cell] === 0 ? 1 : 0;
           const activeCells = prevState.cells[cell] === 0 ? prevState.activeCells += 1 : prevState.activeCells -=1;
           cells[cell] = cellState;
+          Store.cells.getHashMap(cells, prevState.totalBound);
           return { cells, activeCells }
         });
   }
@@ -150,11 +149,14 @@ export default class GameOfLife extends Component {
   }
 
   updateGameBoard() {
+
     return this.setState((prevState) => {
       let cells;
       let nextState;
 
-      Store.cells.getHashMap(prevState.cells, prevState.totalBound);
+      let hashMap = Store.cells.getHashMap(prevState.cells, prevState.totalBound);
+
+      Store.tracking.updateHistory(hashMap);
 
       if (prevState.gameState === false) {
         nextState = { cells: [...prevState.cells] };
@@ -166,6 +168,7 @@ export default class GameOfLife extends Component {
         // check changes to life state from the new life state above
         if (Object.keys(Store.changes).length === 0) {
           // add active cell tracking for modal messageg
+          console.log(Store.tracking.compileStats());
           const modal = getModal();
           modal.show = true;
           nextState = { gameState: false,

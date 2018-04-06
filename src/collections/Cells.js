@@ -7,6 +7,7 @@ export default function Cells() {
     const toroidalArray = createToroidalArray(cells, toroidalBound);
     const cellObjs = createCellObjects(toroidalArray);
     const cellsWithNextState = getNextCells(cellObjs);
+    return hashMap;
   }
 
   function createCellArray(length) {
