@@ -1,16 +1,14 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import { ButtonGroup } from 'react-bootstrap'
 
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Cell from '../../components/Cell';
-import GameModal from '../../components/GameModal';
+import Hero from '../../components/Hero';
 
 // import '../../css/gameOfLife/gameOfLife.css'
 
 import Store from '../../Store';
-
-import getModal from '../../models/Modal';
 
 export default class GameOfLife extends Component {
   constructor(...args) {
@@ -24,16 +22,10 @@ export default class GameOfLife extends Component {
       totalBound: 0,
       boardWidth: 500,
       cells: [],
-      activeCells: 0,
-      hashMap: {},
+      lifeSpan: 0,
       gameState: false,
       interval: null,
-      modal: {
-        show: false,
-        title: 'title',
-        header: 'header',
-        text: 'text'
-      }
+      gameOver: false
     };
   }
 
@@ -57,6 +49,10 @@ export default class GameOfLife extends Component {
       height: `${ (this.state.boardWidth / this.state.totalBound) - 5 }px`,
     };
 
+    const gameOverHero = this.state.gameOver === true
+      ? <Hero stats={ Store.tracking.compileStats() } />
+      : null;
+
     let cells = this.state.cells.map((cell, i) => {
       return <Cell key={ i }
           style={ cellStyle }
@@ -70,13 +66,6 @@ export default class GameOfLife extends Component {
 
     return (
       <div className="universe">
-        <GameModal
-          showModal={ this.state.modal.show }
-          callback={ this.handleModal.bind(this) }
-          title={ this.state.modal.title }
-          header={ this.state.modal.header }
-          text={ this.state.modal.text }
-          animation={ true }/>
         <Grid
           classname={ 'life-board' }
           bound={ this.state.totalBound }
@@ -92,6 +81,7 @@ export default class GameOfLife extends Component {
             <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button grow' } text={ 'Grow' } />
           </ButtonGroup>
         </div>
+        { gameOverHero }
       </div>
     );
   }
@@ -167,19 +157,20 @@ export default class GameOfLife extends Component {
 
         // check changes to life state from the new life state above
         if (Object.keys(Store.changes).length === 0) {
-          // add active cell tracking for modal messageg
-          console.log(Store.tracking.compileStats());
-          const modal = getModal();
-          modal.show = true;
-          nextState = { gameState: false,
+          nextState = {
+                        gameState: false,
                         interval: clearInterval(prevState.interval),
-                        modal };
+                        gameOver: true
+                      };
         } else {
           Object.keys(Store.changes).forEach(key => {
             cells[key] = Store.changes[key];
           });
           Store.changes = {};
-          nextState = { cells };
+          nextState = {
+            cells,
+            lifeSpan: prevState.lifeSpan + 1
+          };
         }
       }
       return nextState;
@@ -198,18 +189,4 @@ export default class GameOfLife extends Component {
         });
   }
 
-  handleModal() {
-    return this.setState((prevState) => {
-      let modal;
-      let show;
-      if (prevState.modal.show === true) {
-        show = false;
-        modal = { ...prevState.modal, show };
-      } else {
-        show = true;
-        modal = { ...prevState.modal, show };
-      }
-      return { modal }
-    });
-  }
 };
