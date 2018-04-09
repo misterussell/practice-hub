@@ -24,11 +24,15 @@ export default class Hero extends Component {
       <Jumbotron>
         <h1>Game Over.</h1>
         <p>
-          Your cells lasted { this.props.lifeSpan } generations.
+          Your cells lasted { this.props.stats.generationStats.lifeSpan } generations.
         </p>
         <p>
         <Link to={{
-          pathname:'/test'
+          pathname:'/stats/gameOfLifeStats',
+          state: {
+            stats: this.props.stats,
+            type: 'GOLstats'
+          }
         }}>
           <Button
             callback={ null }

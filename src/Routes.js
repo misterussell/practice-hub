@@ -9,7 +9,7 @@ import StatDash from './containers/StatDash';
 export default () =>
   <Switch>
     <Route path="/" exact component={ Home } />
-    <Route path='/gameOfLife' component={ LifeBoard } />
-    <Route path='/gameOfLife/stats' component= { StatDash } />
+    <Route path="/gameOfLife" component={ LifeBoard } />
+    <Route path="/stats" component= { StatDash } />
     <Route component={ NotFound } />
   </Switch>;
