@@ -103,7 +103,7 @@ export default function Tracking() {
       stats.cellStats[key].longestDeathspan = Math.max(sustainedPeriods.death.length > 0 ? [...sustainedPeriods.death] : null);
       //average deathspan
       stats.cellStats[key].averageLifeSpan = sustainedPeriods.life.reduce((a, b) => a + b, 0) / sustainedPeriods.life.length;
-      stats.cellStats[key].averageLifeSpan = sustainedPeriods.death.reduce((a, b) => a + b, 0) / sustainedPeriods.death.length;
+      stats.cellStats[key].averageDeathSpan = sustainedPeriods.death.reduce((a, b) => a + b, 0) / sustainedPeriods.death.length;
     });
   }
 
@@ -200,8 +200,31 @@ export default function Tracking() {
     return changes;
   }
 
+
+  function getLifeDeathPlottable(data) {
+    function DataPoint(name, alive, dead) {
+      return Object.freeze({
+        name,
+        alive,
+        dead
+      });
+    }
+    let dataArr = [];
+
+    data.forEach((dataSet, i, arr) => {
+      dataSet.forEach((dataPoint, p, arr2) => {
+        if (i === 0) {
+          dataArr.push(DataPoint(p, arr[i][p], arr[i + 1][p]));
+        };
+      });
+    });
+
+    return dataArr;
+  }
+
   return Object.freeze({
     updateHistory,
-    compileStats
+    compileStats,
+    getLifeDeathPlottable
   });
 }
