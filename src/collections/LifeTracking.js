@@ -96,14 +96,18 @@ export default function Tracking() {
       let sustainedPeriods = { life: getContinousLife(stats.cellStats[key].cellHistory), death: getContinousDeath(stats.cellStats[key].cellHistory) };
       stats.cellStats[key].sustainedPeriods =  sustainedPeriods;
       // shortest periods
-      stats.cellStats[key].shortestLifespan = Math.min(sustainedPeriods.life.length > 0 ? [...sustainedPeriods.life] : null);
-      stats.cellStats[key].shortestDeathspan = Math.min(sustainedPeriods.death.length > 0 ? [...sustainedPeriods.death] : null);
+      stats.cellStats[key].shortestLifespan = sustainedPeriods.life.length > 0 ? Math.min([...sustainedPeriods.life]) : null;
+      stats.cellStats[key].shortestDeathspan = sustainedPeriods.death.length > 0 ? Math.min([...sustainedPeriods.death]) : null;
       // longest periods
-      stats.cellStats[key].longestLifeSpan = Math.max(sustainedPeriods.life.length > 0 ? [...sustainedPeriods.life] : null);
-      stats.cellStats[key].longestDeathspan = Math.max(sustainedPeriods.death.length > 0 ? [...sustainedPeriods.death] : null);
+      stats.cellStats[key].longestLifeSpan = sustainedPeriods.life.length > 0 ? Math.max([...sustainedPeriods.life]) : null;
+      stats.cellStats[key].longestDeathspan = sustainedPeriods.death.length > 0 ? Math.max([...sustainedPeriods.death]) : null;
       //average deathspan
-      stats.cellStats[key].averageLifeSpan = sustainedPeriods.life.reduce((a, b) => a + b, 0) / sustainedPeriods.life.length;
-      stats.cellStats[key].averageLifeSpan = sustainedPeriods.death.reduce((a, b) => a + b, 0) / sustainedPeriods.death.length;
+      stats.cellStats[key].averageLifeSpan = sustainedPeriods.life.length > 0
+        ? sustainedPeriods.life.reduce((a, b) => a + b, 0) / sustainedPeriods.life.length
+        : 0;
+      stats.cellStats[key].averageDeathSpan = sustainedPeriods.death.length > 0
+        ? sustainedPeriods.death.reduce((a, b) => a + b, 0) / sustainedPeriods.death.length
+        : 0;
     });
   }
 
@@ -200,8 +204,60 @@ export default function Tracking() {
     return changes;
   }
 
+
+  function getLifeDeathPlottable(data) {
+    function DataPoint(name, alive, dead) {
+      return Object.freeze({
+        name,
+        alive,
+        dead
+      });
+    };
+    let dataArr = [];
+
+    data.forEach((dataSet, i, arr) => {
+      dataSet.forEach((dataPoint, p, arr2) => {
+        if (i === 0) {
+          dataArr.push(DataPoint(p, arr[i][p], arr[i + 1][p]));
+        };
+      });
+    });
+
+    return dataArr;
+  }
+
+  function getRadialDataFromObj(key, dataObj) {
+    function DataPoint(val, fill) {
+      let colours = ['#8884d8', '#83a6ed', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57', '#ffc658'];
+      return Object.freeze({
+        name: key,
+        val,
+        fill: colours[fill]
+      });
+    };
+    let dataArr = [];
+    let instances = {}
+    let colourFill = 0;
+
+    for (var dataPoint in dataObj) {
+      instances[dataObj[dataPoint][key]] === undefined
+        ? instances[dataObj[dataPoint][key]] = 1
+        : instances[dataObj[dataPoint][key]] += 1;
+      // dataArr.push(DataPoint(dataObj[dataPoint][key]), numberOfInstances);
+    }
+
+    for (var key in instances) {
+      dataArr.push(DataPoint(instances[key], colourFill));
+      colourFill += 1;
+    }
+
+    return dataArr;
+  }
+
   return Object.freeze({
     updateHistory,
-    compileStats
+    compileStats,
+    getLifeDeathPlottable,
+    getRadialDataFromObj
   });
 }

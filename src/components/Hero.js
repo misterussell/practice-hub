@@ -10,10 +10,6 @@ export default class Hero extends Component {
     stats: PropTypes.object
   }
 
-  constructor(...args) {
-    super(...args);
-  }
-
   componentDidMount() {
     console.log(this.props);
   }
@@ -28,7 +24,7 @@ export default class Hero extends Component {
         </p>
         <p>
         <Link to={{
-          pathname:'/stats/gameOfLifeStats',
+          pathname:'/stats/gameOfLife',
           state: {
             stats: this.props.stats,
             type: 'GOLstats'

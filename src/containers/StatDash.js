@@ -11,7 +11,7 @@ export default class StatDash extends Component {
   render() {
 
     const stats = this.props.location.state.type === 'GOLstats'
-      ? <Route path="/stats/gameOfLifeStats" component={ GameOfLifeStats } />
+      ? <Route path="/stats/gameOfLife" component={ GameOfLifeStats } />
       : null;
 
     return (

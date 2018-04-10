@@ -9,6 +9,7 @@ This repo is a centralized location for me to store puzzle/practice JavaScript. 
 
 ## Dependencies
 - Framework: [create-react-app](https://github.com/facebookincubator/create-react-app)
+- Routing: [react-router](https://reacttraining.com/react-router)
 - Frontend Components: [react-bootstrap](https://react-bootstrap.github.io/)
 - CSS Transitions: [react-css-transition](https://wikiwi.github.io/react-css-transition/)
 - Testing: Mocha/Chai.
@@ -17,3 +18,4 @@ This repo is a centralized location for me to store puzzle/practice JavaScript. 
   - [TDD Guide](https://github.com/mawrkus/js-unit-testing-guide#unit-tests)
 - Babel Plugins: [Object Rest Spread](https://babeljs.io/docs/plugins/transform-object-rest-spread/)
 - CSS compiled with [SASS](http://sass-lang.com/)
+- Charts/Dash components: [Recharts](http://recharts.org)
