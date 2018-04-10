@@ -22,11 +22,6 @@ export default function Cell(x, y, cellState, toroidalLimits, arrayPosition) {
     return Object.freeze({ ...this, nextState });
   }
 
-  function changeCellState() {
-    const cellState = this.nextState;
-    return Object.freeze({ ...this, cellState, nextState: null })
-  }
-
   return Object.freeze({
     x,
     y,
