@@ -7,14 +7,13 @@ export default class StackedAreaChart extends Component {
     data: PropTypes.array
   }
 
-  componentDidMount() {
-    console.log(this.props.data);
-  }
-
   render() {
     return (
-      <AreaChart width={600} height={300} data={ this.props.data }
-        margin={{ top: 10, right: 30, left: 0, bottom: 0}}>
+      <AreaChart
+        width={600}
+        height={300}
+        data={ this.props.data }
+        margin={{ top: 10, right: 30, left: 0, bottom: 0}} >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
