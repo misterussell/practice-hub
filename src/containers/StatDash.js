@@ -4,10 +4,6 @@ import { Route } from 'react-router-dom';
 import GameOfLifeStats from './GameOfLifeStats';
 
 export default class StatDash extends Component {
-  constructor(...args) {
-    super(...args);
-  }
-
   render() {
 
     const stats = this.props.location.state.type === 'GOLstats'

@@ -93,18 +93,25 @@ export default function Tracking() {
 
   function analyzeCells() {
     return Object.keys(stats.cellStats).forEach((key, i, arr) => {
-      let sustainedPeriods = { life: getContinousLife(stats.cellStats[key].cellHistory), death: getContinousDeath(stats.cellStats[key].cellHistory) };
+      let sustainedPeriods = {
+        life: getContinousLife(stats.cellStats[key].cellHistory),
+        death: getContinousDeath(stats.cellStats[key].cellHistory)
+      };
       stats.cellStats[key].sustainedPeriods =  sustainedPeriods;
-      // shortest periods
-      stats.cellStats[key].shortestLifespan = sustainedPeriods.life.length > 0 ? Math.min([...sustainedPeriods.life]) : null;
-      stats.cellStats[key].shortestDeathspan = sustainedPeriods.death.length > 0 ? Math.min([...sustainedPeriods.death]) : null;
-      // longest periods
-      stats.cellStats[key].longestLifeSpan = sustainedPeriods.life.length > 0 ? Math.max([...sustainedPeriods.life]) : null;
-      stats.cellStats[key].longestDeathspan = sustainedPeriods.death.length > 0 ? Math.max([...sustainedPeriods.death]) : null;
-      //average deathspan
+      // longest life
+      let maxLife = sustainedPeriods.life.length === 0 ? null : Math.max(...sustainedPeriods.life);
+      stats.cellStats[key].longestLifeSpan = maxLife;
+
+      // longest dead
+      let maxDeath = sustainedPeriods.death.length === 0 ? null : Math.max(...sustainedPeriods.death);
+      stats.cellStats[key].longestDeathSpan = maxDeath;
+
+      // avg life
       stats.cellStats[key].averageLifeSpan = sustainedPeriods.life.length > 0
         ? sustainedPeriods.life.reduce((a, b) => a + b, 0) / sustainedPeriods.life.length
         : 0;
+
+      // avg death
       stats.cellStats[key].averageDeathSpan = sustainedPeriods.death.length > 0
         ? sustainedPeriods.death.reduce((a, b) => a + b, 0) / sustainedPeriods.death.length
         : 0;
@@ -228,7 +235,7 @@ export default function Tracking() {
 
   function getRadialDataFromObj(key, dataObj) {
     function DataPoint(val, fill) {
-      let colours = ['#8884d8', '#83a6ed', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57', '#ffc658'];
+      let colours = ['#8884d8', '#83a6ed', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57', '#ffc658', '#ff4d4d'];
       return Object.freeze({
         name: key,
         val,
@@ -254,10 +261,21 @@ export default function Tracking() {
     return dataArr;
   }
 
+  function buildValueArray(cellObjs, key) {
+    let arr = [];
+
+    for (var cell in cellObjs) {
+      arr.push(cellObjs[cell][key]);
+    }
+
+    return arr;
+  }
+
   return Object.freeze({
     updateHistory,
     compileStats,
     getLifeDeathPlottable,
-    getRadialDataFromObj
+    getRadialDataFromObj,
+    buildValueArray
   });
 }

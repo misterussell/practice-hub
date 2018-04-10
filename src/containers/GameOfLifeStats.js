@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 
 import StackedAreaChart from '../components/StackedAreaChart';
 import RadialBarChart from '../components/RadialBarChart';
+import StatGrid from '../components/StatGrid';
 
 import Store from '../Store';
 
 export default class GameOfLifeStats extends Component {
-  componentWillMount() {
-    console.log(this.props.location.state.stats.cellStats);
-    console.log(Store.tracking.getRadialDataFromObj('averageLifeSpan', this.props.location.state.stats.cellStats))
-  }
   render() {
     return (
       <div>
@@ -29,6 +26,16 @@ export default class GameOfLifeStats extends Component {
               this.props.location.state.stats.cellStats)
           }
           dataKey={ 'val' } />
+        <h3>Average Periods of Death</h3>
+        <RadialBarChart
+          data={
+            Store.tracking.getRadialDataFromObj(
+              'averageDeathSpan',
+              this.props.location.state.stats.cellStats)
+          }
+          dataKey={ 'val' } />
+        <StatGrid
+          data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'cellStateSum') } />
       </div>
     );
   }
