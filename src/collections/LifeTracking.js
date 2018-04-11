@@ -267,7 +267,7 @@ export default function Tracking() {
     for (var cell in cellObjs) {
       arr.push(cellObjs[cell][key]);
     }
-    
+
     return arr;
   }
 

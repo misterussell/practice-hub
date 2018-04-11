@@ -19,7 +19,7 @@ export default class GameOfLifeStats extends Component {
 
     return (
       <div className="all-stats" style= { parentStyle }>
-        {/*<h3 style={ style }>Total Life/Death Sums</h3>
+        <h3 style={ style }>Total Life/Death Sums</h3>
         <StackedAreaChart
           data={
             Store.tracking.getLifeDeathPlottable(
@@ -27,21 +27,7 @@ export default class GameOfLifeStats extends Component {
                this.props.location.state.stats.generationStats.deathSums])
             } />
         <h3 style={ style }>Average Lifespans</h3>
-        <RadialBarChart
-          data={
-            Store.tracking.getRadialDataFromObj(
-              'averageLifeSpan',
-              this.props.location.state.stats.cellStats)
-          }
-          dataKey={ 'val' } />
         <h3 style={ style }>Average Periods of Death</h3>
-        <RadialBarChart
-          data={
-            Store.tracking.getRadialDataFromObj(
-              'averageDeathSpan',
-              this.props.location.state.stats.cellStats)
-          }
-          dataKey={ 'val' } />*/}
         <h3 style={ style }>Lives by Cell</h3>
         <StatGrid
           data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'cellStateSum') }
