@@ -74,10 +74,10 @@ export default class GameOfLife extends Component {
         </Grid>
         <div className="world-meter">
           <ButtonGroup bsStyle="large">
-            <Button callback={ this.reduceWorldSize.bind(this) } classname={ 'game-button shrink' } text={ 'Shrink' }/>
+            <Button callback={ this.state.gameState === false ? this.reduceWorldSize.bind(this) : null } classname={ 'game-button shrink' } text={ 'Shrink' }/>
             <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button start-stop' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
-            <Button callback={ this.clearGameBoard.bind(this) } classname={ 'game-button clear'} text={ 'Clear' } />
-            <Button callback={ this.growWorldSize.bind(this) } classname ={ 'game-button grow' } text={ 'Grow' } />
+            <Button callback={ this.state.gameState === false ? this.clearGameBoard.bind(this) : null } classname={ 'game-button clear'} text={ 'Clear' } />
+            <Button callback={ this.state.gameState === false ? this.growWorldSize.bind(this) : null } classname ={ 'game-button grow' } text={ 'Grow' } />
           </ButtonGroup>
         </div>
         { gameOverHero }

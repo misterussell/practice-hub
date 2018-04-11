@@ -20,6 +20,11 @@ export default function Cells() {
     return cells;
   }
 
+  function updateCellArray(cells) {
+    let updatedCells = [];
+    return updatedCells;
+  }
+
   function createToroidalArray(cells, toroidalBound) {
     let toroidalArray = [];
 
@@ -80,6 +85,7 @@ export default function Cells() {
 
   return Object.freeze({
     createCellArray,
+    updateCellArray,
     createToroidalArray,
     getChangedCells,
     getHashMap
