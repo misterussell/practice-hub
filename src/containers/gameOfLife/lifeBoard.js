@@ -22,7 +22,6 @@ export default class GameOfLife extends Component {
       totalBound: 0,
       boardWidth: 500,
       cells: [],
-      lifeSpan: 0,
       gameState: false,
       interval: null,
       gameOver: false
@@ -31,7 +30,7 @@ export default class GameOfLife extends Component {
 
   componentWillMount() {
     this.setState((prevState) => {
-      return { totalBound: prevState.userBound + prevState.minBound }
+      return { totalBound: prevState.userBound + prevState.minBound };
     });
   }
 
@@ -39,7 +38,7 @@ export default class GameOfLife extends Component {
     let cells = Store.cells.createCellArray(this.state.totalBound * this.state.totalBound);
 
     this.setState((prevState) => {
-      return { cells }
+      return { cells };
     });
   }
 
@@ -113,7 +112,7 @@ export default class GameOfLife extends Component {
               userBound: maxBoundCheck,
               totalBound: newTotalBound,
               cells: [...prevState.cells, ...Store.cells.createCellArray(totalNewCells)]
-             }
+            };
     });
   }
 
@@ -126,7 +125,7 @@ export default class GameOfLife extends Component {
           const activeCells = prevState.cells[cell] === 0 ? prevState.activeCells += 1 : prevState.activeCells -=1;
           cells[cell] = cellState;
           Store.cells.getHashMap(cells, prevState.totalBound);
-          return { cells, activeCells }
+          return { cells, activeCells };
         });
   }
 
@@ -167,10 +166,7 @@ export default class GameOfLife extends Component {
             cells[key] = Store.changes[key];
           });
           Store.changes = {};
-          nextState = {
-            cells,
-            lifeSpan: prevState.lifeSpan + 1
-          };
+          nextState = { cells };
         }
       }
       return nextState;
@@ -185,7 +181,7 @@ export default class GameOfLife extends Component {
       : this.state.gameState === true
         ? null
         : this.setState((prevState) => {
-          return { cells, activeCells: 0 }
+          return { cells, activeCells: 0 };
         });
   }
 
