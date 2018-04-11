@@ -253,8 +253,8 @@ export default function Tracking() {
       // dataArr.push(DataPoint(dataObj[dataPoint][key]), numberOfInstances);
     }
 
-    for (var key in instances) {
-      dataArr.push(DataPoint(instances[key], colourFill));
+    for (var specificKey in instances) {
+      dataArr.push(DataPoint(instances[specificKey], colourFill));
       colourFill += 1;
     }
 
@@ -267,7 +267,7 @@ export default function Tracking() {
     for (var cell in cellObjs) {
       arr.push(cellObjs[cell][key]);
     }
-
+    
     return arr;
   }
 

@@ -9,18 +9,17 @@ import Store from '../Store';
 export default class GameOfLifeStats extends Component {
   render() {
     const parentStyle = {
-      width: '50vw',
+      width: '75vw',
       margin: `0 auto`
     }
 
     const style = {
-      margin: `0 auto`,
-      width: `500px`
+      margin: `0 auto`
     }
 
     return (
       <div className="all-stats" style= { parentStyle }>
-        <h3 style={ style }>Total Life/Death Sums</h3>
+        {/*<h3 style={ style }>Total Life/Death Sums</h3>
         <StackedAreaChart
           data={
             Store.tracking.getLifeDeathPlottable(
@@ -42,10 +41,11 @@ export default class GameOfLifeStats extends Component {
               'averageDeathSpan',
               this.props.location.state.stats.cellStats)
           }
-          dataKey={ 'val' } />
+          dataKey={ 'val' } />*/}
         <h3 style={ style }>Lives by Cell</h3>
         <StatGrid
-          data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'cellStateSum') } />
+          data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'cellStateSum') }
+          type={ 'alive' } />
         <h3 style={ style }>Deaths by Cell</h3>
         <StatGrid
           data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'deaths') } />

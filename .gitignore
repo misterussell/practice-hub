@@ -5,6 +5,7 @@
 ./src/css/.sass-cache
 ./src/css/main.css
 ./src/css/main.css.map
+./src/assets/blog_images
 
 # testing
 /coverage
