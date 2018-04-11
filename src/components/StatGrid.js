@@ -5,14 +5,28 @@ export default class StatGrid extends Component {
     console.log(this.props.data);
   }
   render() {
+
+    let style = {
+      display: `grid`,
+      'grid-template-columns': `50px 50px 50px 50px 50px`,
+      'grid-template-rows': `50px 50px 50px 50px 50px`,
+      width: `250px`,
+      margin: `0 auto`,
+      padding: `10px`
+    }
+
     let cells = this.props.data.map((cell, i) => {
-      return <div key={ i }>
-        <h1>cell</h1>
-      </div>
+      return (
+        <div key={ i }>
+          {cell}
+        </div>
+      );
     });
 
     return (
-      <div>
+      <div
+      className="stat-grid"
+      style={ style } >
         { cells }
       </div>
     );

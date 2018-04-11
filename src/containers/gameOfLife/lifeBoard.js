@@ -22,7 +22,6 @@ export default class GameOfLife extends Component {
       totalBound: 0,
       boardWidth: 500,
       cells: [],
-      lifeSpan: 0,
       gameState: false,
       interval: null,
       gameOver: false
@@ -167,10 +166,7 @@ export default class GameOfLife extends Component {
             cells[key] = Store.changes[key];
           });
           Store.changes = {};
-          nextState = {
-            cells,
-            lifeSpan: prevState.lifeSpan + 1
-          };
+          nextState = { cells };
         }
       }
       return nextState;
