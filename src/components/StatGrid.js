@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Grid from './Grid';
 import StatCell from './StatCell';
 
 export default class StatGrid extends Component {
   static propTypes = {
-    data: PropTypes.array
+    data: PropTypes.array,
+    gridSettings: PropTypes.obj
   }
 
   constructor(...args) {
@@ -23,16 +25,6 @@ export default class StatGrid extends Component {
   }
 
   render() {
-
-    let style = {
-      display: `inline-grid`,
-      gridTemplateColumns: `50px 50px 50px 50px 50px`,
-      gridTemplateRows: `50px 50px 50px 50px 50px`,
-      width: `250px`,
-      margin: `0 auto`,
-      padding: `10px`
-    }
-
     let cells = this.props.data.map((cell, i) => {
       return (
         <StatCell key={ i }
@@ -43,11 +35,12 @@ export default class StatGrid extends Component {
     });
 
     return (
-      <div
-        className="stat-grid"
-        style={ style } >
+      <Grid
+        classname={ this.props.gridSettings.classname }
+        width={ this.props.gridSettings.width }
+        gridTemplate={ this.props.gridSettings.gridTemplate }>
           { cells }
-      </div>
+      </Grid>
     );
   }
 

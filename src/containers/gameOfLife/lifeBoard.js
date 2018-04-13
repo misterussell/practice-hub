@@ -49,7 +49,14 @@ export default class GameOfLife extends Component {
     };
 
     const gameOverHero = this.state.gameOver === true
-      ? <Hero stats={ Store.tracking.compileStats() } />
+      ? <Hero
+          stats={ Store.tracking.compileStats() }
+          gridSettings={{
+            classname: 'stat-board',
+            width: this.state.boardWidth,
+            gridTemplate: this.createGrid()
+            }}
+        />
       : null;
 
     let cells = this.state.cells.map((cell, i) => {
@@ -67,9 +74,8 @@ export default class GameOfLife extends Component {
       <div className="universe">
         <Grid
           classname={ 'life-board' }
-          bound={ this.state.totalBound }
           width={ this.state.boardWidth }
-          gridSettings= { this.createGrid() }>
+          gridTemplate= { this.createGrid() }>
           { cells }
         </Grid>
         <div className="world-meter">
@@ -92,11 +98,13 @@ export default class GameOfLife extends Component {
   }
 
   reduceWorldSize(e) {
-    return this.setState((prevState) => {
-      const minBoundCheck = prevState.userBound === 0 ? 0 : prevState.userBound -= 2;
-      const newTotalBound = prevState.userBound + prevState.minBound;
+    return this.state.userBound === 0
+      ? null
+      : this.setState((prevState) => {
+      const userBound = prevState.userBound -= 2;
+      const newTotalBound = userBound + prevState.minBound;
       const newCells = prevState.cells.slice(0, (newTotalBound * newTotalBound));
-      return { userBound: minBoundCheck,
+      return { userBound,
                totalBound: newTotalBound,
                cells: newCells
              };
@@ -104,12 +112,15 @@ export default class GameOfLife extends Component {
   }
 
   growWorldSize(e) {
-    return this.setState((prevState) => {
-      const maxBoundCheck = prevState.userBound === 12 ? 12 : prevState.userBound += 2;
-      const newTotalBound = maxBoundCheck + prevState.minBound;
-      const totalNewCells = ((newTotalBound * newTotalBound) - (prevState.totalBound * prevState.totalBound));
+    // why is this function resetting the userbound even though
+    return this.state.userBound === 12
+      ? null
+      : this.setState((prevState) => {
+      const userBound = prevState.userBound += 2;
+      const newTotalBound = userBound + prevState.minBound;
+      const totalNewCells = (Math.pow(newTotalBound, 2) - Math.pow(prevState.totalBound, 2));
       return {
-              userBound: maxBoundCheck,
+              userBound,
               totalBound: newTotalBound,
               cells: [...prevState.cells, ...Store.cells.createCellArray(totalNewCells)]
             };

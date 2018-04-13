@@ -27,6 +27,7 @@ export default class Hero extends Component {
           pathname:'/stats/gameOfLife',
           state: {
             stats: this.props.stats,
+            gridSettings: this.props.gridSettings,
             type: 'GOLstats'
           }
         }}>

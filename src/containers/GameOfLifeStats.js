@@ -7,6 +7,9 @@ import StatGrid from '../components/StatGrid';
 import Store from '../Store';
 
 export default class GameOfLifeStats extends Component {
+  componentWillMount() {
+    console.log(this.props);
+  }
   render() {
     const parentStyle = {
       width: '75vw',
@@ -31,10 +34,13 @@ export default class GameOfLifeStats extends Component {
         <h3 style={ style }>Lives by Cell</h3>
         <StatGrid
           data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'cellStateSum') }
-          type={ 'alive' } />
+          type={ 'alive' }
+          gridSettings={ this.props.location.state.gridSettings } />
         <h3 style={ style }>Deaths by Cell</h3>
         <StatGrid
-          data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'deaths') } />
+          data={ Store.tracking.buildValueArray(this.props.location.state.stats.cellStats, 'deaths') }
+          type={ 'dead'}
+          gridSettings={ this.props.location.state.gridSettings } />
       </div>
     );
   }
