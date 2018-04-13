@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 
 import StackedAreaChart from '../components/StackedAreaChart';
-import RadialBarChart from '../components/RadialBarChart';
 import StatGrid from '../components/StatGrid';
 
 import Store from '../Store';
 
 export default class GameOfLifeStats extends Component {
-  componentWillMount() {
-    console.log(this.props);
-  }
   render() {
     const parentStyle = {
       width: '75vw',

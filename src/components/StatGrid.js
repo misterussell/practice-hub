@@ -7,7 +7,7 @@ import StatCell from './StatCell';
 export default class StatGrid extends Component {
   static propTypes = {
     data: PropTypes.array,
-    gridSettings: PropTypes.obj
+    gridSettings: PropTypes.object
   }
 
   constructor(...args) {

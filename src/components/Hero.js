@@ -5,13 +5,16 @@ import PropTypes from 'prop-types';
 
 import Button from './Button';
 
+import Store from '../Store';
+
 export default class Hero extends Component {
   static propTypes = {
-    stats: PropTypes.object
+    stats: PropTypes.object,
+    gridSettings: PropTypes.object
   }
 
-  componentDidMount() {
-    console.log(this.props);
+  componentWillUnmount() {
+    Store.tracking.clearStats();
   }
 
   render() {
@@ -34,9 +37,14 @@ export default class Hero extends Component {
           <Button
             callback={ null }
             classname={ 'game-button' }
-            text= { 'Click here to see more stats.' }
+            text={ 'Click here to see more stats.' }
           />
         </Link>
+        <Button
+          callback={ this.props.close }
+          classname={ 'game-button' }
+          text={ 'Click here to play again.' }
+        />
         </p>
       </Jumbotron>
     );

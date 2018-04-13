@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { ButtonGroup } from 'react-bootstrap'
 
-import Button from '../../components/Button';
-import Grid from '../../components/Grid';
-import Cell from '../../components/Cell';
-import Hero from '../../components/Hero';
+import Button from '../components/Button';
+import Grid from '../components/Grid';
+import Cell from '../components/Cell';
+import Hero from '../components/Hero';
 
 // import '../../css/gameOfLife/gameOfLife.css'
 
-import Store from '../../Store';
+import Store from '../Store';
 
 export default class GameOfLife extends Component {
   constructor(...args) {
@@ -22,7 +22,7 @@ export default class GameOfLife extends Component {
       totalBound: 0,
       boardWidth: 500,
       cells: [],
-      gameState: false,
+      gameOn: false,
       interval: null,
       gameOver: false
     };
@@ -35,9 +35,8 @@ export default class GameOfLife extends Component {
   }
 
   componentDidMount() {
-    let cells = Store.cells.createCellArray(this.state.totalBound * this.state.totalBound);
-
     this.setState((prevState) => {
+      let cells = Store.cells.createCellArray(this.state.totalBound * this.state.totalBound);
       return { cells };
     });
   }
@@ -56,15 +55,17 @@ export default class GameOfLife extends Component {
             width: this.state.boardWidth,
             gridTemplate: this.createGrid()
             }}
+          close={ this.closeHero.bind(this) }
         />
       : null;
 
     let cells = this.state.cells.map((cell, i) => {
+
       return <Cell key={ i }
           style={ cellStyle }
           classname={ 'cell' }
           text={ 'text' }
-          callback={ this.state.gameState === false ? this.handleCellClick.bind(this) : null }
+          callback={ this.state.gameOn === false ? this.handleCellClick.bind(this) : null }
           cellNumber={ i }
           cellState={ cell }
         />
@@ -80,10 +81,10 @@ export default class GameOfLife extends Component {
         </Grid>
         <div className="world-meter">
           <ButtonGroup bsStyle="large">
-            <Button callback={ this.state.gameState === false ? this.reduceWorldSize.bind(this) : null } classname={ 'game-button shrink' } text={ 'Shrink' }/>
-            <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button start-stop' }  text={ this.state.gameState === false ? 'Start' : 'Stop' } />
-            <Button callback={ this.state.gameState === false ? this.clearGameBoard.bind(this) : null } classname={ 'game-button clear'} text={ 'Clear' } />
-            <Button callback={ this.state.gameState === false ? this.growWorldSize.bind(this) : null } classname ={ 'game-button grow' } text={ 'Grow' } />
+            <Button callback={ this.state.gameOn === false ? this.reduceWorldSize.bind(this) : null } classname={ 'game-button shrink' } text={ 'Shrink' }/>
+            <Button callback={ this.updateGameState.bind(this) } classname={ 'game-button start-stop' }  text={ this.state.gameOn === false ? 'Start' : 'Stop' } />
+            <Button callback={ this.state.gameOn === false ? this.clearGameBoard.bind(this) : null } classname={ 'game-button clear'} text={ 'Clear' } />
+            <Button callback={ this.state.gameOn === false ? this.growWorldSize.bind(this) : null } classname ={ 'game-button grow' } text={ 'Grow' } />
           </ButtonGroup>
         </div>
         { gameOverHero }
@@ -106,7 +107,8 @@ export default class GameOfLife extends Component {
       const newCells = prevState.cells.slice(0, (newTotalBound * newTotalBound));
       return { userBound,
                totalBound: newTotalBound,
-               cells: newCells
+               cells: newCells,
+               gameOver: false
              };
     });
   }
@@ -122,7 +124,8 @@ export default class GameOfLife extends Component {
       return {
               userBound,
               totalBound: newTotalBound,
-              cells: [...prevState.cells, ...Store.cells.createCellArray(totalNewCells)]
+              cells: [...prevState.cells, ...Store.cells.createCellArray(totalNewCells)],
+              gameOver: false
             };
     });
   }
@@ -136,20 +139,25 @@ export default class GameOfLife extends Component {
           const activeCells = prevState.cells[cell] === 0 ? prevState.activeCells += 1 : prevState.activeCells -=1;
           cells[cell] = cellState;
           Store.cells.getHashMap(cells, prevState.totalBound);
-          return { cells, activeCells };
+          return {
+            cells,
+            activeCells,
+            gameOver: false
+          };
         });
   }
 
   updateGameState(e) {
     return this.setState((prevState) => {
-      const gameState = prevState.gameState === true ? false : true;
-      const interval = prevState.gameState === true ? clearInterval(prevState.interval) : setInterval(this.updateGameBoard.bind(this), 300);
-      return { gameState, interval };
+      const gameOn = prevState.gameOn === true ? false : true;
+      const interval = prevState.gameOn === true
+        ? clearInterval(prevState.interval)
+        : setInterval(this.updateGameBoard.bind(this), 300);
+      return { gameOn, interval, gameOver: false };
     });
   }
 
   updateGameBoard() {
-
     return this.setState((prevState) => {
       let cells;
       let nextState;
@@ -158,7 +166,7 @@ export default class GameOfLife extends Component {
 
       Store.tracking.updateHistory(hashMap);
 
-      if (prevState.gameState === false) {
+      if (prevState.gameOn === false) {
         nextState = { cells: [...prevState.cells] };
       } else {
         Store.changes = Store.cells.getChangedCells();
@@ -168,7 +176,7 @@ export default class GameOfLife extends Component {
         // check changes to life state from the new life state above
         if (Object.keys(Store.changes).length === 0) {
           nextState = {
-                        gameState: false,
+                        gameOn: false,
                         interval: clearInterval(prevState.interval),
                         gameOver: true
                       };
@@ -185,15 +193,22 @@ export default class GameOfLife extends Component {
   }
 
   clearGameBoard() {
-    let cells = Store.cells.createCellArray(this.state.totalBound * this.state.totalBound);
+    let cells = Store.cells.createCellArray(Math.pow(this.state.totalBound, 2));
 
     return this.state.activeCells === 0
       ? null
-      : this.state.gameState === true
+      : this.state.gameOn === true
         ? null
         : this.setState((prevState) => {
-          return { cells, activeCells: 0 };
+          return { cells };
         });
+  }
+
+  closeHero() {
+    return this.setState(prevState => {
+      let cells = Store.cells.createCellArray(Math.pow(this.state.totalBound, 2));
+      return { gameOver: false , cells };
+    });
   }
 
 };
