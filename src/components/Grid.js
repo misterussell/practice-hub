@@ -6,17 +6,17 @@ import PropTypes from 'prop-types';
 export default class Grid extends Component {
   static propTypes = {
     width: PropTypes.number,
-    gridTemplateColumns: PropTypes.string,
-    gridTemplateRows: PropTypes.string,
+    gridTemplate: PropTypes.string,
     classname: PropTypes.string,
     children: PropTypes.array
   }
 
   render() {
     let gridStyle = {
+      display: 'grid',
       width: this.props.width,
-      gridTemplateColumns: `${ this.props.gridSettings }`,
-      gridTemplateRows: `${ this.props.gridSettings }`
+      gridTemplateColumns: `${ this.props.gridTemplate }`,
+      gridTemplateRows: `${ this.props.gridTemplate }`
     }
 
     return (

@@ -21,6 +21,18 @@ export default function Tracking() {
     return stats;
   }
 
+  function clearStats() {
+    fullHistory = [];
+    stats = {
+      generationStats: {
+        lifeSums: [],
+        deathSums: [],
+        lifeSpan: 0
+      },
+      cellStats: {}
+    };
+  }
+
   function getCellStats() {
     fullHistory.forEach((obj, i, arr) => {
 
@@ -274,6 +286,7 @@ export default function Tracking() {
   return Object.freeze({
     updateHistory,
     compileStats,
+    clearStats,
     getLifeDeathPlottable,
     getRadialDataFromObj,
     buildValueArray

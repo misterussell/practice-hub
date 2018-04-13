@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Home from './containers/Home';
 import NotFound from './containers/NotFound';
-import LifeBoard from './containers/gameOfLife/lifeBoard';
+import LifeBoard from './containers/LifeBoard';
 import StatDash from './containers/StatDash';
 
 export default () =>
