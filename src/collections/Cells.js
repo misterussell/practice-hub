@@ -20,9 +20,27 @@ export default function Cells() {
     return cells;
   }
 
-  function updateCellArray(cells) {
-    let updatedCells = [];
-    return updatedCells;
+  function growCellArray(array, alpha) {
+    const newRow = Array.from(new Array(Math.sqrt(array.length) + alpha), () => {
+      return 0;
+    });
+    const updatedRows = createToroidalArray(array, Math.sqrt(array.length)).map(row => {
+      return [0, ...row, 0];
+    });
+
+    return newRow.concat(...updatedRows, newRow);
+  }
+
+  function shrinkCellArray(array, alpha) {
+    const updatedRows = createToroidalArray(array, Math.sqrt(array.length)).map((row, i, arr) => {
+      return row.slice((alpha / 2), (arr[i].length - (alpha / 2)));
+    }).filter((row, i, arr) => {
+      return i === 0 || i === arr.length - (alpha/2) ? false : true;
+    });
+
+    return [...updatedRows].reduce((a, b) => {
+      return a.concat(b);
+    }, [] );
   }
 
   function createToroidalArray(cells, toroidalBound) {
@@ -85,8 +103,8 @@ export default function Cells() {
 
   return Object.freeze({
     createCellArray,
-    updateCellArray,
-    createToroidalArray,
+    growCellArray,
+    shrinkCellArray,
     getChangedCells,
     getHashMap
   });

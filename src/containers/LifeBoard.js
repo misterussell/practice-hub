@@ -102,29 +102,30 @@ export default class GameOfLife extends Component {
     return this.state.userBound === 0
       ? null
       : this.setState((prevState) => {
+      // console.log(Store.cells.shrinkCellArray(prevState.cells, 2));
       const userBound = prevState.userBound -= 2;
       const newTotalBound = userBound + prevState.minBound;
-      const newCells = prevState.cells.slice(0, (newTotalBound * newTotalBound));
+      const cells = Store.cells.shrinkCellArray(prevState.cells, 2);
       return { userBound,
                totalBound: newTotalBound,
-               cells: newCells,
+               cells,
                gameOver: false
              };
     });
   }
 
   growWorldSize(e) {
-    // why is this function resetting the userbound even though
+    // adjusting the userbound here will allow for a larger grid.
     return this.state.userBound === 12
       ? null
       : this.setState((prevState) => {
       const userBound = prevState.userBound += 2;
       const newTotalBound = userBound + prevState.minBound;
-      const totalNewCells = (Math.pow(newTotalBound, 2) - Math.pow(prevState.totalBound, 2));
+      const cells = Store.cells.growCellArray(prevState.cells, 2);
       return {
               userBound,
               totalBound: newTotalBound,
-              cells: [...prevState.cells, ...Store.cells.createCellArray(totalNewCells)],
+              cells,
               gameOver: false
             };
     });
@@ -200,7 +201,7 @@ export default class GameOfLife extends Component {
       : this.state.gameOn === true
         ? null
         : this.setState((prevState) => {
-          return { cells };
+          return { cells, gameOver: false };
         });
   }
 
